@@ -29,7 +29,7 @@ final class IntegrateRector {
     }
 
     public function applyRule(string $ruleName, int $ruleID): void {
-        echo "__________________________________________________________\n";
+        echo horizontalLine();
 
         echo "$ruleID)\033[33m$ruleName\033[0m is being applied to your codebase..\n";
         $rectorCall = new Rector($this->config["useRectorCache"])->process()->only($ruleName)->run();
@@ -64,7 +64,7 @@ final class IntegrateRector {
         }
         else echo "Rector made no changes with this rule.\n";
 
-        echo "__________________________________________________________\n";
+        echo horizontalLine();
     }
 }
 

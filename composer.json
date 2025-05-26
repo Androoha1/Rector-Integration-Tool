@@ -7,7 +7,8 @@
             "Androoha\\RectorIntegrationTool\\": "src/"
         },
         "files": [
-            "src/Core/HelperFunctions/coloredEcho.php"
+            "src/Core/HelperFunctions/coloredEcho.php",
+            "src/Core/HelperFunctions/horizontalLine.php"
         ]
     },
     "authors": [
