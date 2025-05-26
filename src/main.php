@@ -23,12 +23,12 @@ final class IntegrateRector {
         foreach ($this->config["ruleSets"] as $name => $ruleSet) {
             echo coloredText("Going to apply rules from the $name rule set:\n");
             foreach ($ruleSet as $index => $rule) {
-                $this->applyRule($rule, $index);
+                $this->applyRule($rule, $index, $name);
             }
         }
     }
 
-    public function applyRule(string $ruleName, int $ruleID): void {
+    public function applyRule(string $ruleName, int $ruleID, string $groupName): void {
         echo horizontalLine();
 
         echo "$ruleID)" . coloredText($ruleName, "yellow") . "is being applied to your codebase..\n";
@@ -47,7 +47,7 @@ final class IntegrateRector {
         echo " Done!\n";
 
         if (Git::hasChanges()) {
-            $commitMessage = "ONE-11445 apply " . $ruleName . " rule.";
+            $commitMessage = "ONE-11445 [$groupName] apply " . $ruleName . " rule.";
             echo "Testing the app after changes..";
             if (new Artisan()->test()->run()->succeeded()) {
                 echo coloredText(" Success!\n", "green");
