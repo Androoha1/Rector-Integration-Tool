@@ -7,7 +7,7 @@
             "Androoha\\RectorIntegrationTool\\": "src/"
         },
         "files": [
-            "src/Core/HelperFunctions/*.php"
+            "src/Core/HelperFunctions/coloredEcho.php"
         ]
     },
     "authors": [
