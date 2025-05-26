@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Androoha\RectorIntegrationTool\Core;
+
 use Androoha\RectorIntegrationTool\Core\ShellCommand;
 
 final class Artisan {

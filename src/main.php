@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 require_once '../vendor/autoload.php';
 
+use Androoha\RectorIntegrationTool\Core\Git;
+use Androoha\RectorIntegrationTool\Core\Rector;
+use Androoha\RectorIntegrationTool\Core\Artisan;
+
 $config = require "configuration.php";
 
 final class IntegrateRector {
@@ -17,7 +21,7 @@ final class IntegrateRector {
 
     public function integrate(): void {
         foreach ($this->config["ruleSets"] as $name => $ruleSet) {
-            echo "Going to apply rules from the " . coloredEcho($ruleSet["name"]) . " rule set:\n";
+            echo coloredEcho("Going to apply rules from the $name rule set:\n");
             foreach ($ruleSet as $index => $rule) {
                 $this->applyRule($rule, $index);
             }
