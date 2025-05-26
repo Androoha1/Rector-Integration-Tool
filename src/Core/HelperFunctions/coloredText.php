@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-function coloredEcho(string $text, string $color = 'blue'): string {
+function coloredText(string $text, string $color = 'blue'): string {
     $colors = [
         'red' => "\033[31m",
         'green' => "\033[32m",

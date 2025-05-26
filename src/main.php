@@ -21,7 +21,7 @@ final class IntegrateRector {
 
     public function integrate(): void {
         foreach ($this->config["ruleSets"] as $name => $ruleSet) {
-            echo coloredEcho("Going to apply rules from the $name rule set:\n");
+            echo coloredText("Going to apply rules from the $name rule set:\n");
             foreach ($ruleSet as $index => $rule) {
                 $this->applyRule($rule, $index);
             }
@@ -31,7 +31,7 @@ final class IntegrateRector {
     public function applyRule(string $ruleName, int $ruleID): void {
         echo horizontalLine();
 
-        echo "$ruleID)\033[33m$ruleName\033[0m is being applied to your codebase..\n";
+        echo "$ruleID)" . coloredText($ruleName, "yellow") . "is being applied to your codebase..\n";
         $rectorCall = new Rector($this->config["useRectorCache"])->process()->only($ruleName)->run();
 
         $output = $rectorCall->getOutput();
@@ -50,14 +50,15 @@ final class IntegrateRector {
             $commitMessage = "ONE-11445 apply " . $ruleName . " rule.";
             echo "Testing the app after changes..";
             if (new Artisan()->test()->run()->succeeded()) {
-                echo " \033[32mSuccess!\033[0m\n";
+                echo coloredText(" Success!\n", "green");
 
                 new Git()->addAll()->run();
                 new Git()->commit($commitMessage)->run();
                 echo "Changes are commited!\n";
             }
             else {
-                echo " \033[31mFail!\033[0m\n";
+
+                echo coloredText(" Fail!\n", "red");
                 echo "Changes will not be commited because tests didn't pass.\n";
                 Git::clearAllChanges();
             }
