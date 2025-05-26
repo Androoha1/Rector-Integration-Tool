@@ -31,7 +31,7 @@ final class IntegrateRector {
     public function applyRule(string $ruleName, int $ruleID, string $groupName): void {
         echo horizontalLine();
 
-        echo "$ruleID)" . coloredText($ruleName, "yellow") . "is being applied to your codebase..\n";
+        echo "$ruleID)" . coloredText($ruleName, "yellow") . " is being applied to your codebase..\n";
         $rectorCall = new Rector($this->config["useRectorCache"])->process()->only($ruleName)->run();
 
         $output = $rectorCall->getOutput();
