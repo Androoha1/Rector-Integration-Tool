@@ -13,7 +13,7 @@ final class Git {
         return $this;
     }
     public function commit(string $message): self {
-        $this->command .= "git commit -m \"" . $message . "\"";
+        $this->command .= "commit -m \"" . $message . "\"";
         return $this;
     }
     static function hasChanges(): bool {
