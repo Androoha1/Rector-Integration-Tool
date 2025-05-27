@@ -36,7 +36,7 @@ final class IntegrateRector {
         echo "$ruleID)" . coloredText($ruleName, "yellow") . " is being applied to your codebase..\n";
 
         $rectorCall = new Rector($this->config["useRectorCache"])->process()->only($ruleName);
-        while (!$rectorCall->run()) {
+        while (!$rectorCall->run()->succeeded()) {
             echo coloredText(" Rector failed!\n", "red");
         }
 
