@@ -17,6 +17,6 @@ final class Composer {
 
     static public function require(array $package, bool $dev = false): ShellCommand {
 
-        return new ShellCommand("composer require " . ($dev ? "--dev " : "") . implode(' ', $package))->run();
+        return new ShellCommand("composer require " . ($dev ? "--dev " : "") . implode(' ', $package) . " > NUL 2>&1")->run();
     }
 }
