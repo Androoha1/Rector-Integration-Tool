@@ -85,6 +85,9 @@ final class IntegrateRector {
         echo coloredText("Copying rector configuration.. :");
         new ShellCommand("copy " . $this->config["toolDir"] .  "\\src\\rectorConfigExample.php " . $this->config["projectDir"] . "\\rector.php")->run();
         echo coloredText("Done!\n", "green");
+
+        Git::addAll()->run();
+        Git::commit("ONE-11445 add rector base configuration.");
     }
 }
 
