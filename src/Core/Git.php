@@ -21,4 +21,8 @@ final class Git {
         $systemCall = new ShellCommand("git reset --hard HEAD");
         $systemCall->run();
     }
+
+    static public function checkoutNewBranch(string $name): ShellCommand {
+        return new ShellCommand("git checkout -b " . $name)->run();
+    }
 }

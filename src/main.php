@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 require_once '../vendor/autoload.php';
 
+use Androoha\RectorIntegrationTool\Core\Composer;
 use Androoha\RectorIntegrationTool\Core\Git;
 use Androoha\RectorIntegrationTool\Core\Rector;
 use Androoha\RectorIntegrationTool\Core\Artisan;
+use Androoha\RectorIntegrationTool\Core\ShellCommand;
 
 $config = require "configuration.php";
 
@@ -15,10 +17,14 @@ final class IntegrateRector {
     private bool $rectorIsSatisfied = true;
     public function __construct() {
         $this->config = require "configuration.php";
-        chdir($this->config["projectDir"]);
     }
 
     public function integrate(): void {
+        chdir($this->config["projectDir"]);
+        Git::checkoutNewBranch("ONE-11445-integrate-rector-tool");
+        $this->installPackages();
+        $this->copyConfiguration();
+
         do {
             $this->rectorIsSatisfied = true;
             foreach ($this->config["ruleSets"] as $name => $ruleSet) {
@@ -64,6 +70,21 @@ final class IntegrateRector {
         else echo "Rector made no changes with this rule.\n";
 
         echo horizontalLine();
+    }
+
+    private function installPackages(): void {
+        echo coloredText("Installing rector packages with composer.. :");
+        if (Composer::require(["rector/rector", "driftingly/rector-laravel"], dev: true)->succeeded()) echo coloredText("Done!\n", "green");
+        else echo coloredText(" Fail!\n", "red");
+
+        Git::addAll()->run();
+        Git::commit("ONE-11445 add rector and driftingly/rector-laravel as dev dependencies.");
+    }
+
+    private function copyConfiguration(): void {
+        echo coloredText("Copying rector configuration.. :");
+        new ShellCommand("cp " . $this->config["toolDir"] .  "\\src\\rectorConfigExample.php " . $this->config["projectDir"] . "\\rector.php")->run();
+        echo coloredText("Done!\n", "green");
     }
 }
 
