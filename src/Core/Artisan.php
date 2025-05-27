@@ -7,15 +7,8 @@ namespace Androoha\RectorIntegrationTool\Core;
 use Androoha\RectorIntegrationTool\Core\ShellCommand;
 
 final class Artisan {
-    private string $command = 'php artisan ';
 
-    public function test(): self {
-        $this->command .= " test";
-
-        return $this;
-    }
-
-    public function run(): ShellCommand {
-        return new ShellCommand($this->command)->run();
+    static public function test(): ShellCommand {
+        return new ShellCommand('php artisan test')->run();
     }
 }

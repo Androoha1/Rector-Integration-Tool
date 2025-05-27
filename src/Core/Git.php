@@ -8,24 +8,17 @@ use Androoha\RectorIntegrationTool\Core\ShellCommand;
 
 final class Git {
     private string $command = 'git ';
-    public function addAll(): self {
-        $this->command .= " add .";
-        return $this;
+    static public function addAll(): ShellCommand {
+        return new ShellCommand('git add .')->run();
     }
-    public function commit(string $message): self {
-        $this->command .= "commit -m \"" . $message . "\"";
-        return $this;
+    static public function commit(string $message): ShellCommand {
+        return new ShellCommand("git commit -m \"" . $message . "\"")->run();
     }
     static function hasChanges(): bool {
-        $systemCall = new ShellCommand("git status --porcelain");
-        $systemCall->run();
-        return ($systemCall->getOutput() !== []);
+        return (new ShellCommand("git status --porcelain")->run()->getOutput() !== []);
     }
     static function clearAllChanges(): void {
         $systemCall = new ShellCommand("git reset --hard HEAD");
         $systemCall->run();
-    }
-    public function run(): ShellCommand {
-        return new ShellCommand($this->command)->run();
     }
 }

@@ -35,21 +35,22 @@ final class IntegrateRector {
 
         echo "$ruleID)" . coloredText($ruleName, "yellow") . " is being applied to your codebase..\n";
 
-        $rectorCall = new Rector($this->config["useRectorCache"])->process()->only($ruleName);
-        while (!$rectorCall->run()->succeeded()) {
+        $attempt = 0;
+        while (++$attempt < 5 && !Rector::process($ruleName,false)->succeeded()) {
             echo coloredText(" Rector failed!\n", "red");
         }
+        if ($attempt === 5) echo coloredText(" Rector failed completely..!\n", "red");
 
         echo " Done!\n";
 
         if (Git::hasChanges()) {
             $commitMessage = "ONE-11445 [$groupName] apply " . $ruleName . " rule.";
             echo "Testing the app after changes..";
-            if (new Artisan()->test()->run()->succeeded()) {
+            if (Artisan::test()->succeeded()) {
                 echo coloredText(" Success!\n", "green");
 
-                new Git()->addAll()->run();
-                new Git()->commit($commitMessage)->run();
+                Git::addAll();
+                Git::commit($commitMessage);
                 echo "Changes are commited!\n";
                 $this->rectorIsSatisfied = false;
             }
