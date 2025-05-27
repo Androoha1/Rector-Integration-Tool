@@ -12,20 +12,22 @@ $config = require "configuration.php";
 
 final class IntegrateRector {
     private array $config = [];
-    /** @var string[] */
-    private array $allRules;
+    private bool $rectorIsSatisfied = true;
     public function __construct() {
         $this->config = require "configuration.php";
         chdir($this->config["projectDir"]);
     }
 
     public function integrate(): void {
-        foreach ($this->config["ruleSets"] as $name => $ruleSet) {
-            echo coloredText("Going to apply rules from the $name rule set:\n");
-            foreach ($ruleSet as $index => $rule) {
-                $this->applyRule($rule, $index, $name);
+        do {
+            $this->rectorIsSatisfied = true;
+            foreach ($this->config["ruleSets"] as $name => $ruleSet) {
+                echo coloredText("Going to apply rules from the $name rule set:\n");
+                foreach ($ruleSet as $index => $rule) {
+                    $this->applyRule($rule, $index, $name);
+                }
             }
-        }
+        } while (!$this->rectorIsSatisfied);
     }
 
     public function applyRule(string $ruleName, int $ruleID, string $groupName): void {
@@ -55,6 +57,7 @@ final class IntegrateRector {
                 new Git()->addAll()->run();
                 new Git()->commit($commitMessage)->run();
                 echo "Changes are commited!\n";
+                $this->rectorIsSatisfied = false;
             }
             else {
 
