@@ -7,10 +7,9 @@ namespace Androoha\RectorIntegrationTool\Core;
 use Androoha\RectorIntegrationTool\Core\ShellCommand;
 
 final class Rector {
-    private bool $useCache = false;
     private string $command = 'vendor\\bin\\rector ';
     public function __construct(bool $useCache = false) {
-        $this->useCache = $useCache;
+        if ($useCache) $this->command .= " --clear-cache";
     }
 
     public function process(): self {
@@ -24,7 +23,6 @@ final class Rector {
     }
 
     public function run(): ShellCommand {
-        if (!$this->useCache) $this->command .= " --clear-cache";
         return new ShellCommand($this->command)->run();
     }
 }
