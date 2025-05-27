@@ -13,14 +13,14 @@ $strictBooleans = require __DIR__ . "/RuleSets/strictBooleans.php";
 $carbonRules = require __DIR__ . "/RuleSets/carbon.php";
 $rectorPresets = require __DIR__ . "/RuleSets/rectorPreset.php";
 $phpunitCodeQualityRules = require __DIR__ . "/RuleSets/phpUnitCodeQuality.php";
+$driftinglyRectorLaravelRules = require __DIR__ . "/RuleSets/driftinglyRectorLaravel.php";
 
 
 $config = [
-    "projectDir" => "",
-    "ruleSets" => [
+    "projectDir" => "your/path/is/unique",
+    "ruleSets" => array(
         "php84-upgrade" => $phpUpgradeRules,
         "dead-code" => $deadCodeRules,
-        "code-quality" => $codeQualityRules,
         "type-declaration" => $typeDeclarationRules,
         "naming" => $namingRules,
         "instanceof" => $instanceofRules,
@@ -29,7 +29,9 @@ $config = [
         "carbon" => $carbonRules,
         "rector-preset" => $rectorPresets,
         "phpunit-code-quality" => $phpunitCodeQualityRules,
-    ],
+        "code-quality" => $codeQualityRules,
+        "driftingly-laravel" => $driftinglyRectorLaravelRules,
+    ),
     "useRectorCache" => false
 ];
 
