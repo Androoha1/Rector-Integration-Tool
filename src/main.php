@@ -21,7 +21,7 @@ final class IntegrateRector {
 
     public function integrate(): void {
         chdir($this->config["projectDir"]);
-        Git::checkoutNewBranch("ONE-11445-integrate-rector-tool");
+        //Git::checkoutNewBranch("ONE-11445-integrate-rector-tool");
         $this->installPackages();
         $this->copyConfiguration();
 
@@ -83,7 +83,7 @@ final class IntegrateRector {
 
     private function copyConfiguration(): void {
         echo coloredText("Copying rector configuration.. :");
-        new ShellCommand("cp " . $this->config["toolDir"] .  "\\src\\rectorConfigExample.php " . $this->config["projectDir"] . "\\rector.php")->run();
+        new ShellCommand("copy " . $this->config["toolDir"] .  "\\src\\rectorConfigExample.php " . $this->config["projectDir"] . "\\rector.php")->run();
         echo coloredText("Done!\n", "green");
     }
 }
