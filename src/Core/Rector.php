@@ -9,7 +9,7 @@ use Androoha\RectorIntegrationTool\Core\ShellCommand;
 final class Rector {
     private string $command = 'vendor\\bin\\rector ';
     public function __construct(bool $useCache = false) {
-        if ($useCache) $this->command .= " --clear-cache";
+        if (!$useCache) $this->command .= " --clear-cache";
     }
 
     public function process(): self {
