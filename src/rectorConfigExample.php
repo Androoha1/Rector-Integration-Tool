@@ -20,8 +20,7 @@ return RectorConfig::configure()
         importShortClasses: false,
         removeUnusedImports: true
     )
-    ->withSkip([])
-    ->withPhpSets(php84: true)
+    ->withPhpSets()
     ->withParallel(maxNumberOfProcess: 10)
 
     ->withSets([
