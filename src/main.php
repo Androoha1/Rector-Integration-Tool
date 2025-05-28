@@ -21,7 +21,7 @@ final class IntegrateRector {
 
     public function integrate(): void {
         chdir($this->config["projectDir"]);
-        //Git::checkoutNewBranch("ONE-11445-integrate-rector-tool");
+        Git::checkoutNewBranch("ONE-11445-integrate-rector-tool");
         $this->installPackages();
         $this->copyConfiguration();
 
