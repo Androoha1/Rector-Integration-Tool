@@ -15,6 +15,7 @@ $config = require "configuration.php";
 final class IntegrateRector {
     private array $config = [];
     private bool $rectorIsSatisfied = true;
+    private array $failedRules = [];
     public function __construct() {
         $this->config = require "configuration.php";
     }
@@ -34,6 +35,8 @@ final class IntegrateRector {
                 }
             }
         } while (!$this->rectorIsSatisfied);
+
+        $this->skipFailedRulesInRectorConf();
     }
 
     public function applyRule(string $ruleName, int $ruleID, string $groupName): void {
@@ -65,6 +68,7 @@ final class IntegrateRector {
                 echo coloredText(" Fail!\n", "red");
                 echo "Changes will not be commited because tests didn't pass.\n";
                 Git::clearAllChanges();
+                $this->failedRules[] = $ruleName;
             }
         }
         else echo "Rector made no changes with this rule.\n";
@@ -88,6 +92,10 @@ final class IntegrateRector {
 
         Git::addAll()->run();
         Git::commit("ONE-11445 add rector base configuration.");
+    }
+
+    public function skipFailedRulesInRectorConf(): void {
+        //TOTO: add the rules that failed to the withSkip() method of the rector conf.
     }
 }
 
