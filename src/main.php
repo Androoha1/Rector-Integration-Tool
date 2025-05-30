@@ -95,6 +95,11 @@ final class IntegrateRector {
     }
 
     public function skipFailedRulesInRectorConf(): void {
+        echo coloredText("Ignoring bad rules in the rector configuration. Here is the list of basd rules:\n");
+        foreach ($this->failedRules as $rule) {
+            echo "   -" . basename($rule) . "\n";
+        }
+
         $export = var_export($this->failedRules, true);
         $file = $this->config["toolDir"] . '/temp/failedRules-' . getenv('PROJECT_NAME') . ".php";
         file_put_contents($file, "<?php\n\nreturn $export;\n");
@@ -111,4 +116,3 @@ final class IntegrateRector {
 
 $integrator = new IntegrateRector();
 $integrator->integrate();
-
