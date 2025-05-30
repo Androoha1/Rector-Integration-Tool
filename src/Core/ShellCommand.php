@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Androoha\RectorIntegrationTool\Core;
 
 final class ShellCommand {
-    private string $command = '';
+    public string $command = '';
     private array $output = [];
     private int $result_code = 0;
 
