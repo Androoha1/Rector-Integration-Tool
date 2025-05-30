@@ -21,25 +21,24 @@ final class IntegrateRector {
     }
 
     public function integrate(): void {
-        putenv("PROJECT_NAME=" . basename($this->config["projectDir"]));
-        if (is_dir($this->config["projectDir"] . "web")) $this->config["projectDir"] .= "/web";
-        echo $this->config["projectDir"] . PHP_EOL;
-        chdir($this->config["projectDir"]);
-        Git::checkoutNewBranch("ONE-11445-integrate-rector-tool");
-        $this->installPackages();
+//        putenv("PROJECT_NAME=" . basename($this->config["projectDir"]));
+//        if (is_dir($this->config["projectDir"] . "web")) $this->config["projectDir"] .= "/web";
+//        chdir($this->config["projectDir"]);
+//        Git::checkoutNewBranch("ONE-11445-integrate-rector-tool");
+//        $this->installPackages();
         $this->copyConfiguration();
-
-        do {
-            $this->rectorIsSatisfied = true;
-            foreach ($this->config["ruleSets"] as $name => $ruleSet) {
-                echo coloredText("Going to apply rules from the $name rule set:\n");
-                foreach ($ruleSet as $index => $rule) {
-                    $this->applyRule($rule, $index, $name);
-                }
-            }
-        } while (!$this->rectorIsSatisfied);
-
-        $this->skipFailedRulesInRectorConf();
+//
+//        do {
+//            $this->rectorIsSatisfied = true;
+//            foreach ($this->config["ruleSets"] as $name => $ruleSet) {
+//                echo coloredText("Going to apply rules from the $name rule set:\n");
+//                foreach ($ruleSet as $index => $rule) {
+//                    $this->applyRule($rule, $index, $name);
+//                }
+//            }
+//        } while (!$this->rectorIsSatisfied);
+//
+//        $this->skipFailedRulesInRectorConf();
     }
 
     public function applyRule(string $ruleName, int $ruleID, string $groupName): void {
@@ -79,6 +78,8 @@ final class IntegrateRector {
 
     private function installPackages(): void {
         echo coloredText("Installing rector packages with composer.. :");
+        (new ShellCommand('powershell.exe -Command "(Get-Content composer.json) -replace \'v1\\.2\\.0\', \'v2.0.0\' | Set-Content composer.json"'))->run();
+        Composer::update();
         if (Composer::require(["rector/rector", "driftingly/rector-laravel"], dev: true)->succeeded()) echo coloredText("Done!\n", "green");
         else echo coloredText(" Fail!\n", "red");
 
