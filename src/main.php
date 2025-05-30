@@ -22,7 +22,8 @@ final class IntegrateRector {
 
     public function integrate(): void {
         putenv("PROJECT_NAME=" . basename($this->config["projectDir"]));
-        if (is_dir($this->config["projectDir"]) . "/web") $this->config["projectDir"] .= "/web";
+        if (is_dir($this->config["projectDir"] . "web")) $this->config["projectDir"] .= "/web";
+        echo $this->config["projectDir"] . PHP_EOL;
         chdir($this->config["projectDir"]);
         Git::checkoutNewBranch("ONE-11445-integrate-rector-tool");
         $this->installPackages();
@@ -87,7 +88,7 @@ final class IntegrateRector {
 
     private function copyConfiguration(): void {
         echo coloredText("Copying rector configuration.. :");
-        new ShellCommand("copy " . $this->config["toolDir"] .  "\\src\\rectorConfigExample.php " . $this->config["projectDir"] . "\\rector.php")->run();
+        new ShellCommand("copy " . $this->config["toolDir"] .  "\\src\\rectorConfigExampleLaravel.php " . $this->config["projectDir"] . "\\rector.php")->run();
         echo coloredText("Done!\n", "green");
 
         Git::addAll()->run();
