@@ -27,16 +27,16 @@ final class IntegrateRector {
 //        Git::checkoutNewBranch("ONE-11445-integrate-rector-tool");
 //        $this->installPackages();
 //        $this->copyConfiguration();
-
-        do {
-            $this->rectorIsSatisfied = true;
-            foreach ($this->config["ruleSets"] as $name => $ruleSet) {
-                echo coloredText("Going to apply rules from the $name rule set:\n");
-                foreach ($ruleSet as $index => $rule) {
-                    $this->applyRule($rule, $index, $name);
-                }
-            }
-        } while (!$this->rectorIsSatisfied);
+//
+//        do {
+//            $this->rectorIsSatisfied = true;
+//            foreach ($this->config["ruleSets"] as $name => $ruleSet) {
+//                echo coloredText("Going to apply rules from the $name rule set:\n");
+//                foreach ($ruleSet as $index => $rule) {
+//                    $this->applyRule($rule, $index, $name);
+//                }
+//            }
+//        } while (!$this->rectorIsSatisfied);
 
         $this->skipFailedRulesInRectorConf();
     }
