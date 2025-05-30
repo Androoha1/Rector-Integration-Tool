@@ -21,6 +21,8 @@ final class IntegrateRector {
     }
 
     public function integrate(): void {
+        putenv("PROJECT_NAME=" . basename($this->config["projectDir"]));
+        if (is_dir($this->config["projectDir"]) . "/web") $this->config["projectDir"] .= "/web";
         chdir($this->config["projectDir"]);
         Git::checkoutNewBranch("ONE-11445-integrate-rector-tool");
         $this->installPackages();
@@ -41,15 +43,13 @@ final class IntegrateRector {
 
     public function applyRule(string $ruleName, int $ruleID, string $groupName): void {
         echo horizontalLine();
-
         echo "$ruleID)" . coloredText($ruleName, "yellow") . " is being applied to your codebase..\n";
 
         $attempt = 0;
         while (++$attempt < 5 && !Rector::process($ruleName,false)->succeeded()) {
             echo coloredText(" Rector failed!\n", "red");
         }
-        if ($attempt === 5) echo coloredText(" Rector failed completely..!\n", "red");
-
+        if ($attempt === 5) echo coloredText(" Rector failed completely..! (maybe the rule is ignored)\n", "red");
         echo " Done!\n";
 
         if (Git::hasChanges()) {
@@ -95,7 +95,17 @@ final class IntegrateRector {
     }
 
     public function skipFailedRulesInRectorConf(): void {
-        //TOTO: add the rules that failed to the withSkip() method of the rector conf.
+        $export = var_export($this->failedRules, true);
+        $file = $this->config["toolDir"] . '/temp/failedRules-' . getenv('PROJECT_NAME') . ".php";
+        file_put_contents($file, "<?php\n\nreturn $export;\n");
+
+        chdir($this->config["toolDir"]);
+        Rector::process(withCache: false, path: "\"". $this->config["projectDir"] . '/rector.php' . "\"");
+        Rector::process(withCache: false, path: "\"". $this->config["projectDir"] . '/rector.php' . "\"");
+
+        chdir($this->config["projectDir"]);
+        Git::addAll();
+        Git::commit("ONE-11445 ignore rules that broke the project.");
     }
 }
 
