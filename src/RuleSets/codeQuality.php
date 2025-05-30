@@ -40,7 +40,7 @@ return [
     'Rector\CodeQuality\Rector\FuncCall\SingleInArrayToCompareRector',
     'Rector\CodeQuality\Rector\FuncCall\UnwrapSprintfOneArgumentRector',
     'Rector\CodeQuality\Rector\Identical\BooleanNotIdenticalToNotIdenticalRector',
-    'Rector\CodeQuality\Rector\Identical\FlipTypeControlToUseExclusiveTypeRector',
+//    'Rector\CodeQuality\Rector\Identical\FlipTypeControlToUseExclusiveTypeRector', -> ban for BTA
     'Rector\CodeQuality\Rector\Identical\SimplifyArraySearchRector',
     'Rector\CodeQuality\Rector\Identical\SimplifyBoolIdenticalTrueRector',
     'Rector\CodeQuality\Rector\Identical\SimplifyConditionsRector',
@@ -72,5 +72,5 @@ return [
     'Rector\Php52\Rector\Property\VarToPublicPropertyRector',
     'Rector\Php71\Rector\FuncCall\RemoveExtraParametersRector',
     'Rector\Renaming\Rector\FuncCall\RenameFunctionRector',
-    'Rector\Strict\Rector\Empty_\DisallowedEmptyRuleFixerRector',
+//    'Rector\Strict\Rector\Empty_\DisallowedEmptyRuleFixerRector', -> ban for BTA
 ];

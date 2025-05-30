@@ -19,7 +19,7 @@ return [
     'RectorLaravel\Rector\FuncCall\ArgumentFuncCallToMethodCallRector',
     'RectorLaravel\Rector\FuncCall\DispatchNonShouldQueueToDispatchSyncRector',
     'RectorLaravel\Rector\FuncCall\FactoryFuncCallToStaticCallRector',
-    'RectorLaravel\Rector\FuncCall\HelperFuncCallToFacadeClassRector',
+//    'RectorLaravel\Rector\FuncCall\HelperFuncCallToFacadeClassRector', -> ban for BTA
     'RectorLaravel\Rector\If_\AbortIfRector',
     'RectorLaravel\Rector\If_\ReportIfRector',
     'RectorLaravel\Rector\If_\ThrowIfRector',
@@ -37,7 +37,7 @@ return [
     'RectorLaravel\Rector\Namespace_\FactoryDefinitionRector',
     'RectorLaravel\Rector\New_\AddGuardToLoginEventRector',
     'RectorLaravel\Rector\PropertyFetch\ReplaceFakerInstanceWithHelperRector',
-    'RectorLaravel\Rector\StaticCall\EloquentMagicMethodToQueryBuilderRector',
+//    'RectorLaravel\Rector\StaticCall\EloquentMagicMethodToQueryBuilderRector', -> will not use this
     'RectorLaravel\Rector\StaticCall\Redirect301ToPermanentRedirectRector',
     'RectorLaravel\Rector\StaticCall\ReplaceAssertTimesSendWithAssertSentTimesRector',
     'RectorLaravel\Rector\StaticCall\RequestStaticValidateToInjectRector',
@@ -51,7 +51,7 @@ return [
     'Rector\Renaming\Rector\PropertyFetch\RenamePropertyRector',
     'Rector\Renaming\Rector\StaticCall\RenameStaticMethodRector',
     'Rector\Transform\Rector\ArrayDimFetch\ArrayDimFetchToMethodCallRector',
-    'Rector\Transform\Rector\FuncCall\FuncCallToNewRector',
+//    'Rector\Transform\Rector\FuncCall\FuncCallToNewRector', -> will no use in projects
     'Rector\Transform\Rector\FuncCall\FuncCallToStaticCallRector',
     'Rector\Transform\Rector\StaticCall\StaticCallToFuncCallRector',
     'Rector\Transform\Rector\StaticCall\StaticCallToMethodCallRector',
