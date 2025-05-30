@@ -27,16 +27,16 @@ final class IntegrateRector {
 //        Git::checkoutNewBranch("ONE-11445-integrate-rector-tool");
 //        $this->installPackages();
 //        $this->copyConfiguration();
-//
-//        do {
-//            $this->rectorIsSatisfied = true;
-//            foreach ($this->config["ruleSets"] as $name => $ruleSet) {
-//                echo coloredText("Going to apply rules from the $name rule set:\n");
-//                foreach ($ruleSet as $index => $rule) {
-//                    $this->applyRule($rule, $index, $name);
-//                }
-//            }
-//        } while (!$this->rectorIsSatisfied);
+
+        do {
+            $this->rectorIsSatisfied = true;
+            foreach ($this->config["ruleSets"] as $name => $ruleSet) {
+                echo coloredText("Going to apply rules from the $name rule set:\n");
+                foreach ($ruleSet as $index => $rule) {
+                    $this->applyRule($rule, $index, $name);
+                }
+            }
+        } while (!$this->rectorIsSatisfied);
 
         $this->skipFailedRulesInRectorConf();
     }
@@ -103,6 +103,7 @@ final class IntegrateRector {
         Rector::process(withCache: false, path: "\"". $this->config["projectDir"] . '/rector.php' . "\"");
         Rector::process(withCache: false, path: "\"". $this->config["projectDir"] . '/rector.php' . "\"");
 
+        chdir($this->config["projectDir"]);
         Git::addAll();
         Git::commit("ONE-11445 ignore rules that broke the project.");
     }
