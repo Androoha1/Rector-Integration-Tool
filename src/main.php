@@ -78,7 +78,7 @@ final class IntegrateRector {
 
     private function installPackages(): void {
         echo coloredText("Installing rector packages with composer.. :");
-        (new ShellCommand('powershell.exe -Command "(Get-Content composer.json) -replace \'v1\\.2\\.0\', \'v2.0.0\' | Set-Content composer.json"'))->run();
+        (new ShellCommand('powershell.exe -Command "(Get-Content composer.json) -replace \'v2\\.0\\.0\', \'dev-ONE-11530-adjust-rule-sets\' | Set-Content composer.json"'))->run();
         Composer::update();
         if (Composer::require(["rector/rector", "driftingly/rector-laravel"], dev: true)->succeeded()) echo coloredText("Done!\n", "green");
         else echo coloredText(" Fail!\n", "red");
