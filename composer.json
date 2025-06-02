@@ -4,7 +4,8 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Androoha\\RectorIntegrationTool\\": "src/"
+            "Androoha\\RectorIntegrationTool\\": "src/",
+            "Androoha\\RectorIntegrationTool\\database\\": "database/"
         },
         "files": [
             "src/Core/HelperFunctions/coloredText.php",
@@ -19,7 +20,8 @@
     "minimum-stability": "dev",
     "require": {
         "rector/rector": "dev-main",
-        "driftingly/rector-laravel": "^0.27.0"
+        "driftingly/rector-laravel": "^0.27.0",
+        "ext-pdo": "*"
     },
     "require-dev": {
         "nikic/php-parser": "^5.4"

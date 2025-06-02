@@ -9,6 +9,7 @@ use Androoha\RectorIntegrationTool\Core\Git;
 use Androoha\RectorIntegrationTool\Core\Rector;
 use Androoha\RectorIntegrationTool\Core\Artisan;
 use Androoha\RectorIntegrationTool\Core\ShellCommand;
+use Androoha\RectorIntegrationTool\database\RectorIntegrateDb;
 
 $config = require "configuration.php";
 
@@ -16,15 +17,18 @@ final class IntegrateRector {
     private array $config = [];
     private bool $rectorIsSatisfied = true;
     private array $failedRules = [];
+    private RectorIntegrateDb $db;
+
     public function __construct() {
         $this->config = require "configuration.php";
+        $this->db = new RectorIntegrateDb();
     }
 
     public function integrate(): void {
         putenv("PROJECT_NAME=" . basename($this->config["projectDir"]));
         if (is_dir($this->config["projectDir"] . "/web")) $this->config["projectDir"] .= "/web";
         chdir($this->config["projectDir"]);
-        Git::checkoutNewBranch("ONE-11445-integrate-rector-tool");
+        //Git::checkoutNewBranch("ONE-11445-integrate-rector-tool");
         $this->installPackages();
         $this->copyConfiguration();
 
@@ -61,11 +65,16 @@ final class IntegrateRector {
                 Git::addAll();
                 Git::commit($commitMessage);
                 echo "Changes are commited!\n";
-                //todo: add to notReviewed rules array if it is not in the review list
+
+                if (!$this->db->isRuleReviewed($ruleName)) {
+                    $projectName = basename($this->config["projectDir"]);
+                    $this->db->addNotReviewedRule($ruleName, $projectName);
+                    echo "Rule added to not-reviewed list for project: $projectName\n";
+                }
+
                 $this->rectorIsSatisfied = false;
             }
             else {
-
                 echo coloredText(" Fail!\n", "red");
                 echo "Changes will not be commited because tests didn't pass.\n";
                 Git::clearAllChanges();
@@ -79,7 +88,7 @@ final class IntegrateRector {
 
     private function installPackages(): void {
         echo coloredText("Installing rector packages with composer.. :\n");
-        (new ShellCommand('powershell.exe -Command "(Get-Content composer.json) -replace \'\\^v1\\.2\\.0\', \'dev-ONE-11530-adjust-rule-sets\' | Set-Content composer.json"'))->run();
+        (new ShellCommand('powershell.exe -Command "(Get-Content composer.json) -replace \'\\^v1\\.2\\.0\', \'2.0.1\' | Set-Content composer.json"'))->run();
         Composer::update();
         if (Composer::require(["rector/rector", "driftingly/rector-laravel"], dev: true)->succeeded()) echo coloredText("Done!\n", "green");
         else echo coloredText(" Fail!\n", "red");
@@ -89,7 +98,7 @@ final class IntegrateRector {
     }
 
     private function copyConfiguration(): void {
-        echo coloredText("Copying rector configuration.. :");
+        echo coloredText("Copying rector configuration.. : ");
         new ShellCommand('copy "' . $this->config["toolDir"] . '\\src\\rectorConfigExampleLaravel.php" "' . $this->config["projectDir"] . '\\rector.php"')->run()->getOutput();
         echo coloredText("Done!\n", "green");
 
@@ -98,7 +107,7 @@ final class IntegrateRector {
     }
 
     public function skipFailedRulesInRectorConf(): void {
-        echo coloredText("Ignoring bad rules in the rector configuration. Here is the list of basd rules:\n");
+        echo coloredText("Ignoring bad rules in the rector configuration. Here is the list of bad rules:\n");
         foreach ($this->failedRules as $rule) {
             echo "   -" . basename($rule) . "\n";
         }
