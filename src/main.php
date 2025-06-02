@@ -29,7 +29,7 @@ final class IntegrateRector {
         if (is_dir($this->config["projectDir"] . "/web")) $this->config["projectDir"] .= "/web";
         chdir($this->config["projectDir"]);
         //Git::checkoutNewBranch("ONE-11445-integrate-rector-tool");
-        $this->installPackages();
+        //$this->installPackages();
         $this->copyConfiguration();
 
         do {
@@ -50,7 +50,7 @@ final class IntegrateRector {
         echo "$ruleID)" . coloredText($ruleName, "yellow") . " is being applied to your codebase..\n";
 
         $attempt = 0;
-        while (++$attempt < 5 && !Rector::process($ruleName,false)->succeeded()) {
+        while (++$attempt < 5 && !Rector::process(specificRule: $ruleName, clearCache: true)->succeeded()) {
             echo coloredText(" Rector failed!\n", "red");
         }
         if ($attempt === 5) echo coloredText(" Rector failed completely..! (maybe the rule is ignored)\n", "red");
@@ -117,8 +117,8 @@ final class IntegrateRector {
         file_put_contents($file, "<?php\n\nreturn $export;\n");
 
         chdir($this->config["toolDir"]);
-        Rector::process(withCache: false, path: "\"". $this->config["projectDir"] . '/rector.php' . "\"");
-        Rector::process(withCache: false, path: "\"". $this->config["projectDir"] . '/rector.php' . "\"");
+        Rector::process(clearCache: true, path: "\"". $this->config["projectDir"] . '/rector.php' . "\"");
+        Rector::process(clearCache: true, path: "\"". $this->config["projectDir"] . '/rector.php' . "\"");
 
         chdir($this->config["projectDir"]);
         Git::addAll();
