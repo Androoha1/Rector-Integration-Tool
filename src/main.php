@@ -21,24 +21,24 @@ final class IntegrateRector {
     }
 
     public function integrate(): void {
-//        putenv("PROJECT_NAME=" . basename($this->config["projectDir"]));
-//        if (is_dir($this->config["projectDir"] . "web")) $this->config["projectDir"] .= "/web";
-//        chdir($this->config["projectDir"]);
-//        Git::checkoutNewBranch("ONE-11445-integrate-rector-tool");
-//        $this->installPackages();
+        putenv("PROJECT_NAME=" . basename($this->config["projectDir"]));
+        if (is_dir($this->config["projectDir"] . "/web")) $this->config["projectDir"] .= "/web";
+        chdir($this->config["projectDir"]);
+        Git::checkoutNewBranch("ONE-11445-integrate-rector-tool");
+        $this->installPackages();
         $this->copyConfiguration();
-//
-//        do {
-//            $this->rectorIsSatisfied = true;
-//            foreach ($this->config["ruleSets"] as $name => $ruleSet) {
-//                echo coloredText("Going to apply rules from the $name rule set:\n");
-//                foreach ($ruleSet as $index => $rule) {
-//                    $this->applyRule($rule, $index, $name);
-//                }
-//            }
-//        } while (!$this->rectorIsSatisfied);
-//
-//        $this->skipFailedRulesInRectorConf();
+
+        do {
+            $this->rectorIsSatisfied = true;
+            foreach ($this->config["ruleSets"] as $name => $ruleSet) {
+                echo coloredText("Going to apply rules from the $name rule set:\n");
+                foreach ($ruleSet as $index => $rule) {
+                    $this->applyRule($rule, $index, $name);
+                }
+            }
+        } while (!$this->rectorIsSatisfied);
+
+        $this->skipFailedRulesInRectorConf();
     }
 
     public function applyRule(string $ruleName, int $ruleID, string $groupName): void {
@@ -61,6 +61,7 @@ final class IntegrateRector {
                 Git::addAll();
                 Git::commit($commitMessage);
                 echo "Changes are commited!\n";
+                //todo: add to notReviewed rules array if it is not in the review list
                 $this->rectorIsSatisfied = false;
             }
             else {
@@ -68,7 +69,7 @@ final class IntegrateRector {
                 echo coloredText(" Fail!\n", "red");
                 echo "Changes will not be commited because tests didn't pass.\n";
                 Git::clearAllChanges();
-                $this->failedRules[] = $ruleName;
+                if (!in_array($ruleName, $this->failedRules)) $this->failedRules[] = $ruleName;
             }
         }
         else echo "Rector made no changes with this rule.\n";
@@ -77,8 +78,8 @@ final class IntegrateRector {
     }
 
     private function installPackages(): void {
-        echo coloredText("Installing rector packages with composer.. :");
-        (new ShellCommand('powershell.exe -Command "(Get-Content composer.json) -replace \'v2\\.0\\.0\', \'dev-ONE-11530-adjust-rule-sets\' | Set-Content composer.json"'))->run();
+        echo coloredText("Installing rector packages with composer.. :\n");
+        (new ShellCommand('powershell.exe -Command "(Get-Content composer.json) -replace \'\\^v1\\.2\\.0\', \'dev-ONE-11530-adjust-rule-sets\' | Set-Content composer.json"'))->run();
         Composer::update();
         if (Composer::require(["rector/rector", "driftingly/rector-laravel"], dev: true)->succeeded()) echo coloredText("Done!\n", "green");
         else echo coloredText(" Fail!\n", "red");
@@ -89,7 +90,7 @@ final class IntegrateRector {
 
     private function copyConfiguration(): void {
         echo coloredText("Copying rector configuration.. :");
-        new ShellCommand("copy " . $this->config["toolDir"] .  "\\src\\rectorConfigExampleLaravel.php " . $this->config["projectDir"] . "\\rector.php")->run();
+        new ShellCommand('copy "' . $this->config["toolDir"] . '\\src\\rectorConfigExampleLaravel.php" "' . $this->config["projectDir"] . '\\rector.php"')->run()->getOutput();
         echo coloredText("Done!\n", "green");
 
         Git::addAll()->run();
