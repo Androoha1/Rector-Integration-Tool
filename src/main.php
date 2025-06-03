@@ -30,7 +30,7 @@ final class IntegrateRector {
         chdir($this->config["projectDir"]);
         //Git::checkoutNewBranch("ONE-11445-integrate-rector-tool");
         //$this->installPackages();
-        $this->copyConfiguration();
+        //$this->copyConfiguration();
 
         do {
             $this->rectorIsSatisfied = true;
@@ -67,9 +67,8 @@ final class IntegrateRector {
                 echo "Changes are commited!\n";
 
                 if (!$this->db->isRuleReviewed($ruleName)) {
-                    $projectName = basename($this->config["projectDir"]);
-                    $this->db->addNotReviewedRule($ruleName, $projectName);
-                    echo "Rule added to not-reviewed list for project: $projectName\n";
+                    $this->db->addNotReviewedRule($ruleName, getenv('PROJECT_NAME'));
+                    echo "Rule added to not-reviewed list for project: " . getenv('PROJECT_NAME') . PHP_EOL;
                 }
 
                 $this->rectorIsSatisfied = false;
