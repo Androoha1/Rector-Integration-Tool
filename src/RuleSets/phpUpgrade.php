@@ -115,10 +115,10 @@ return [
     'Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector',
     'Rector\Php83\Rector\FuncCall\CombineHostPortLdapUriRector',
     'Rector\Php83\Rector\FuncCall\RemoveGetClassGetParentClassNoArgsRector',
-    'Rector\Php84\Rector\FuncCall\AddEscapeArgumentRector',
-    'Rector\Php84\Rector\FuncCall\RoundingModeEnumRector',
-    'Rector\Php84\Rector\MethodCall\NewMethodCallWithoutParenthesesRector',
-    'Rector\Php84\Rector\Param\ExplicitNullableParamTypeRector',
+//    'Rector\Php84\Rector\FuncCall\AddEscapeArgumentRector', -> for some reason its only included if php84 param is set to true in the withPhpSets method
+//    'Rector\Php84\Rector\FuncCall\RoundingModeEnumRector', -> for some reason its only included if php84 param is set to true in the withPhpSets method
+//    'Rector\Php84\Rector\MethodCall\NewMethodCallWithoutParenthesesRector', -> for some reason its only included if php84 param is set to true in the withPhpSets method
+//    'Rector\Php84\Rector\Param\ExplicitNullableParamTypeRector', -> for some reason its only included if php84 param is set to true in the withPhpSets method
     'Rector\Removing\Rector\FuncCall\RemoveFuncCallArgRector',
     'Rector\Renaming\Rector\FuncCall\RenameFunctionRector',
     'Rector\Transform\Rector\StaticCall\StaticCallToFuncCallRector',

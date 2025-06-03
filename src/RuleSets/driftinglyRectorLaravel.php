@@ -16,7 +16,7 @@ return [
     'RectorLaravel\Rector\Class_\ReplaceExpectsMethodsInTestsRector',
     'RectorLaravel\Rector\Class_\UnifyModelDatesWithCastsRector',
     'RectorLaravel\Rector\Coalesce\ApplyDefaultInsteadOfNullCoalesceRector',
-    'RectorLaravel\Rector\FuncCall\ArgumentFuncCallToMethodCallRector',
+//    'RectorLaravel\Rector\FuncCall\ArgumentFuncCallToMethodCallRector',
     'RectorLaravel\Rector\FuncCall\DispatchNonShouldQueueToDispatchSyncRector',
     'RectorLaravel\Rector\FuncCall\FactoryFuncCallToStaticCallRector',
 //    'RectorLaravel\Rector\FuncCall\HelperFuncCallToFacadeClassRector', -> ban for BTA
@@ -40,7 +40,7 @@ return [
 //    'RectorLaravel\Rector\StaticCall\EloquentMagicMethodToQueryBuilderRector', -> will not use this
     'RectorLaravel\Rector\StaticCall\Redirect301ToPermanentRedirectRector',
     'RectorLaravel\Rector\StaticCall\ReplaceAssertTimesSendWithAssertSentTimesRector',
-    'RectorLaravel\Rector\StaticCall\RequestStaticValidateToInjectRector',
+//    'RectorLaravel\Rector\StaticCall\RequestStaticValidateToInjectRector',
     'Rector\Arguments\Rector\ClassMethod\ArgumentAdderRector',
     'Rector\Removing\Rector\ClassMethod\ArgumentRemoverRector',
     'Rector\Removing\Rector\Class_\RemoveInterfacesRector',
@@ -54,7 +54,7 @@ return [
 //    'Rector\Transform\Rector\FuncCall\FuncCallToNewRector', -> will no use in projects
     'Rector\Transform\Rector\FuncCall\FuncCallToStaticCallRector',
     'Rector\Transform\Rector\StaticCall\StaticCallToFuncCallRector',
-    'Rector\Transform\Rector\StaticCall\StaticCallToMethodCallRector',
+//    'Rector\Transform\Rector\StaticCall\StaticCallToMethodCallRector', -> will no use in projects
     'Rector\Transform\Rector\String_\StringToClassConstantRector',
     'Rector\TypeDeclaration\Rector\ClassMethod\AddParamTypeDeclarationRector',
     'Rector\TypeDeclaration\Rector\ClassMethod\AddReturnTypeDeclarationRector',

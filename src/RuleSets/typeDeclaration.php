@@ -43,7 +43,7 @@ return [
     'Rector\TypeDeclaration\Rector\Closure\AddClosureNeverReturnTypeRector',
     'Rector\TypeDeclaration\Rector\Closure\AddClosureVoidReturnTypeWhereNoReturnRector',
     'Rector\TypeDeclaration\Rector\Closure\ClosureReturnTypeRector',
-    'Rector\TypeDeclaration\Rector\Empty_\EmptyOnNullableObjectToInstanceOfRector',
+//    'Rector\TypeDeclaration\Rector\Empty_\EmptyOnNullableObjectToInstanceOfRector',
     'Rector\TypeDeclaration\Rector\FunctionLike\AddParamTypeSplFixedArrayRector',
     'Rector\TypeDeclaration\Rector\FunctionLike\AddReturnTypeDeclarationFromYieldsRector',
     'Rector\TypeDeclaration\Rector\Function_\AddFunctionVoidReturnTypeWhereNoReturnRector',

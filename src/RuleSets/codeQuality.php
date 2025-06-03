@@ -16,7 +16,7 @@ return [
     'Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector',
     'Rector\CodeQuality\Rector\Class_\StaticToSelfStaticMethodCallOnFinalClassRector',
     'Rector\CodeQuality\Rector\Concat\JoinStringConcatRector',
-    'Rector\CodeQuality\Rector\Empty_\SimplifyEmptyCheckOnEmptyArrayRector',
+//    'Rector\CodeQuality\Rector\Empty_\SimplifyEmptyCheckOnEmptyArrayRector',
     'Rector\CodeQuality\Rector\Equal\UseIdenticalOverEqualWithSameTypeRector',
     'Rector\CodeQuality\Rector\Expression\InlineIfToExplicitIfRector',
     'Rector\CodeQuality\Rector\Expression\TernaryFalseExpressionToIfRector',
