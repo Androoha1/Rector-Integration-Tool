@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 require_once '../vendor/autoload.php';
 
-use Androoha\RectorIntegrationTool\Core\Composer;
-use Androoha\RectorIntegrationTool\Core\Git;
-use Androoha\RectorIntegrationTool\Core\Rector;
-use Androoha\RectorIntegrationTool\Core\Artisan;
-use Androoha\RectorIntegrationTool\Core\ShellCommand;
-use Androoha\RectorIntegrationTool\database\RectorIntegrateDb;
+use RectorIntegrationTool\Core\Composer;
+use RectorIntegrationTool\Core\Git;
+use RectorIntegrationTool\Core\Rector;
+use RectorIntegrationTool\Core\Artisan;
+use RectorIntegrationTool\Core\ShellCommand;
+use RectorIntegrationTool\database\RectorIntegrateDb;
 
 $config = require "configuration.php";
 
@@ -30,6 +30,7 @@ final class IntegrateRector {
         chdir($this->config["projectDir"]);
         //Git::checkoutNewBranch("ONE-11445-integrate-rector-tool");
         //$this->installPackages();
+        //$this->copyConfiguration();
         //$this->copyConfiguration();
 
         do {

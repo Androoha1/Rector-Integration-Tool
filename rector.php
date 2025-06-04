@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
-use Androoha\RectorIntegrationTool\Rector\AddRuleToSkip;
+use RectorIntegrationTool\Rector\AddRuleToSkip;
 
 $rulesToSkip = require __DIR__ . '\\temp\\failedRules-' . getenv('PROJECT_NAME') . ".php";
 

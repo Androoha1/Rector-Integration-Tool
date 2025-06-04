@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Androoha\RectorIntegrationTool\Core;
+namespace RectorIntegrationTool\Core;
 
-use Androoha\RectorIntegrationTool\Core\ShellCommand;
+use RectorIntegrationTool\Core\ShellCommand;
 
 final class Git {
     private string $command = 'git ';

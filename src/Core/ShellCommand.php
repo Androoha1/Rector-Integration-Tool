@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Androoha\RectorIntegrationTool\Core;
+namespace RectorIntegrationTool\Core;
 
 final class ShellCommand {
     private string $command = '';

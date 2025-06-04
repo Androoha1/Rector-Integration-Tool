@@ -4,8 +4,8 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Androoha\\RectorIntegrationTool\\": "src/",
-            "Androoha\\RectorIntegrationTool\\database\\": "database/"
+            "RectorIntegrationTool\\": "src/",
+            "RectorIntegrationTool\\database\\": "database/"
         },
         "files": [
             "src/Core/HelperFunctions/coloredText.php",
