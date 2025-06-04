@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace RectorIntegrationTool\Core;
-
-use RectorIntegrationTool\Core\ShellCommand;
+namespace RectorIntegrationTool\Core\CliAbstraction;
 
 final class Git {
     private string $command = 'git ';

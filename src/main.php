@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 require_once '../vendor/autoload.php';
 
-use RectorIntegrationTool\Core\Composer;
-use RectorIntegrationTool\Core\Git;
-use RectorIntegrationTool\Core\Rector;
-use RectorIntegrationTool\Core\Artisan;
-use RectorIntegrationTool\Core\ShellCommand;
+use RectorIntegrationTool\Core\CliAbstraction\Artisan;
+use RectorIntegrationTool\Core\CliAbstraction\Composer;
+use RectorIntegrationTool\Core\CliAbstraction\Git;
+use RectorIntegrationTool\Core\CliAbstraction\Rector;
+use RectorIntegrationTool\Core\CliAbstraction\ShellCommand;
 use RectorIntegrationTool\database\RectorIntegrateDb;
 
 $config = require "configuration.php";

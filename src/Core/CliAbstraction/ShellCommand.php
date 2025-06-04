@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace RectorIntegrationTool\Core;
+namespace RectorIntegrationTool\Core\CliAbstraction;
 
 final class ShellCommand {
     private string $command = '';
