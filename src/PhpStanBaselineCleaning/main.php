@@ -4,6 +4,14 @@ $isLogging = true;
 $projectWebDir = "C:\Users\andrii.posternak\Desktop\BTA_projects\services\links-server\web";
 chdir($projectWebDir);
 
+function escapeForNeon(string $text): string {
+    return str_replace("'", "''", $text);
+}
+
+function escapeForNeonRegex(string $text): string {
+    return preg_quote(escapeForNeon($text), "/");
+}
+
 $stanJsonOutput = shell_exec("vendor\\bin\\phpstan.bat analyse --error-format=json --no-progress");
 $phpstanResults = json_decode($stanJsonOutput, true);
 
@@ -43,7 +51,7 @@ else {
     foreach ($unmatchedPatterns as $unmatched) {
         if ($isLogging) echo "Removing: {$unmatched['path']} - {$unmatched['identifier']}\n";
 
-        $escapedPattern = preg_quote($unmatched['pattern'], '/');
+        $escapedPattern = escapeForNeonRegex($unmatched['pattern']);
         $escapedIdentifier = preg_quote($unmatched['identifier'], '/');
         $entryRegex = '/-[^-]*message:[^#]*#' . $escapedPattern . '#[^-]*identifier:\s*' . $escapedIdentifier . '[^-]*?(?=-|\z)/s'; //flexible regex just in case
 
