@@ -12,7 +12,7 @@ function escapeForNeonRegex(string $text): string {
     return preg_quote(escapeForNeon($text), "/");
 }
 
-$stanJsonOutput = shell_exec("vendor\\bin\\phpstan.bat analyse --error-format=json --no-progress");
+$stanJsonOutput = shell_exec("vendor/bin/phpstan analyse --error-format=json --no-progress");
 $phpstanResults = json_decode($stanJsonOutput, true);
 
 //retrieve data about ignore.unmatched errors and transform it to the format of the baseline file
@@ -22,7 +22,7 @@ foreach ($phpstanResults['files'] as $filePath => $fileData) {
         if ($message['identifier'] === 'ignore.unmatched') {
             if (preg_match('/Ignored error pattern #(.+?)# \((.+?)\) in path (.+?) was not matched in reported errors./', $message['message'], $matches)) {
                 $fullPath = $matches[3];
-                $relativePath = str_replace($projectWebDir . '\\', '', $fullPath);
+                $relativePath = str_replace($projectWebDir . '/', '', $fullPath);
                 $relativePath = str_replace('\\', '/', $relativePath); //to match the baseline file format
 
                 $unmatchedPatterns[] = [

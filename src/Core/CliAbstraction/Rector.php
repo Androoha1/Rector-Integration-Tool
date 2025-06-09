@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace RectorIntegrationTool\Core\CliAbstraction;
 
 final class Rector {
-    static private string $command = 'vendor\\bin\\rector ';
+    static private string $command = 'vendor/bin/rector ';
 
     static public function process(string $specificRule = "", bool $clearCache = false, ?string $path = null): ShellCommand {
         $command = self::$command . "process";

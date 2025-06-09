@@ -105,9 +105,17 @@ final class IntegrateRector {
     private function updateConfigPackage(): void {
         echo coloredText("Updating the configuration package.. :\n");
 
-        new ShellCommand('powershell.exe -Command "(Get-Content composer.json) -replace \'\\^v1\\.2\\.0\', \'^v2.0.3\' | Set-Content composer.json"')->run();
+        $composerContent = file_get_contents('composer.json');
+        $composerContent = str_replace('^v1.2.0', '^v2.0.3', $composerContent);
+        file_put_contents('composer.json', $composerContent);
+
         Composer::update();
-        new ShellCommand('powershell -Command "(Get-Content phpstan.neon) -replace \'/phpstan\\.neon\', \'/phpstan-laravel.neon\' | Set-Content phpstan.neon"')->run();
+
+        if (file_exists('phpstan.neon')) {
+            $phpstanContent = file_get_contents('phpstan.neon');
+            $phpstanContent = str_replace('/phpstan.neon', '/phpstan-laravel.neon', $phpstanContent);
+            file_put_contents('phpstan.neon', $phpstanContent);
+        }
 
         Git::commitAll("ONE-11445 update the configuration package to the newest version.");
     }
@@ -126,7 +134,7 @@ final class IntegrateRector {
                 $fileName = "unknownProjectType.php";
         }
 
-        new ShellCommand('copy "' . $this->config["toolDir"] . '\\src\\DefaultConfigs\\' . $fileName . '" "' . $this->config["projectDir"] . '\\rector.php"')->run()->getOutput();
+        copy($this->config["toolDir"] . '/src/DefaultConfigs/' . $fileName, $this->config["projectDir"] . '/rector.php');
         echo coloredText("Done!\n", "green");
 
         Git::commitAll("ONE-11445 add rector base configuration (to be cleaned later).");

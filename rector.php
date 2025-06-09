@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Rector\Config\RectorConfig;
 use RectorIntegrationTool\Rector\AddRuleToSkip;
 
-$rulesToSkip = require __DIR__ . '\\temp\\failedRules-' . getenv('PROJECT_NAME') . ".php";
+$rulesToSkip = require __DIR__ . '/temp/failedRules-' . getenv('PROJECT_NAME') . ".php";
 
 return RectorConfig::configure()
     ->withImportNames(
