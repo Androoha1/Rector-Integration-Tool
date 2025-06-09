@@ -13,6 +13,7 @@ final class Rector {
         if ($specificRule) $command .= " --only=" . $specificRule;
         if ($clearCache) $command .= " --clear-cache";
 
-        return new ShellCommand($command)->run();
+        $shellCommand = new ShellCommand($command);
+        return $shellCommand->run();
     }
 }

@@ -6,10 +6,13 @@ namespace RectorIntegrationTool\Core\CliAbstraction;
 
 final class Git {
     static public function addAll(): ShellCommand {
-        return new ShellCommand('git add .')->run();
+        $shellCommand = new ShellCommand('git add .');
+        return $shellCommand->run();
     }
+
     static public function commit(string $message): ShellCommand {
-        return new ShellCommand("git commit -m \"" . $message . "\"")->run();
+        $shellCommand = new ShellCommand("git commit -m \"" . $message . "\"");
+        return $shellCommand->run();
     }
 
     static public function commitAll(string $message): ShellCommand {
@@ -18,14 +21,17 @@ final class Git {
     }
 
     static function hasChanges(): bool {
-        return (new ShellCommand("git status --porcelain")->run()->getOutput() !== []);
+        $shellCommand = new ShellCommand("git status --porcelain");
+        return ($shellCommand->run()->getOutput() !== []);
     }
+
     static function clearAllChanges(): void {
         $systemCall = new ShellCommand("git reset --hard HEAD");
         $systemCall->run();
     }
 
     static public function checkoutNewBranch(string $name): ShellCommand {
-        return new ShellCommand("git checkout -b " . $name)->run();
+        $shellCommand = new ShellCommand("git checkout -b " . $name);
+        return $shellCommand->run();
     }
 }

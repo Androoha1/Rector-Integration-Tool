@@ -6,15 +6,17 @@ namespace RectorIntegrationTool\Core\CliAbstraction;
 
 final class Composer {
     static public function install(): ShellCommand {
-        return new ShellCommand("composer install")->run();
+        $shellCommand = new ShellCommand("composer install");
+        return $shellCommand->run();
     }
 
     static public function update(): ShellCommand {
-        return new ShellCommand("composer update --no-interaction")->run();
+        $shellCommand = new ShellCommand("composer update --no-interaction");
+        return $shellCommand->run();
     }
 
     static public function require(array $package, bool $dev = false): ShellCommand {
-
-        return new ShellCommand("composer require " . ($dev ? "--dev " : "") . implode(' ', $package) . " > /dev/null 2>&1")->run();
+        $shellCommand = new ShellCommand("composer require " . ($dev ? "--dev " : "") . implode(' ', $package) . " > /dev/null 2>&1");
+        return $shellCommand->run();
     }
 }
