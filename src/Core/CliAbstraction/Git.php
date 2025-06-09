@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace RectorIntegrationTool\Core\CliAbstraction;
 
 final class Git {
-    private string $command = 'git ';
     static public function addAll(): ShellCommand {
         return new ShellCommand('git add .')->run();
     }
