@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 require_once '../vendor/autoload.php';
 
-use RectorIntegrationTool\Core\CliAbstraction\Artisan;
 use RectorIntegrationTool\Core\CliAbstraction\Composer;
 use RectorIntegrationTool\Core\CliAbstraction\Git;
 use RectorIntegrationTool\Core\CliAbstraction\Rector;
 use RectorIntegrationTool\Core\CliAbstraction\ShellCommand;
 use RectorIntegrationTool\database\RectorIntegrateDb;
+use RectorIntegrationTool\Core\Tester;
 
 $config = require "configuration.php";
 
@@ -28,18 +28,16 @@ final class IntegrateRector {
         putenv("PROJECT_NAME=" . basename($this->config["projectDir"]));
         if (is_dir($this->config["projectDir"] . "/web")) $this->config["projectDir"] .= "/web";
         chdir($this->config["projectDir"]);
-        //Git::checkoutNewBranch("ONE-11445-integrate-rector-tool");
-        //$this->installPackages();
-        //$this->copyConfiguration();
-        //$this->copyConfiguration();
+        Git::checkoutNewBranch($this->config["jiraId"] . "-integrate-rector-tool");
+
+        $this->installPackages();
+//        $this->updateConfigPackage();
+        $this->copyConfiguration();
 
         do {
             $this->rectorIsSatisfied = true;
             foreach ($this->config["ruleSets"] as $name => $ruleSet) {
-                echo coloredText("Going to apply rules from the $name rule set:\n");
-                foreach ($ruleSet as $index => $rule) {
-                    $this->applyRule($rule, $index, $name);
-                }
+                $this->applySetOfRules($ruleSet, $name);
             }
         } while (!$this->rectorIsSatisfied);
 
@@ -60,11 +58,10 @@ final class IntegrateRector {
         if (Git::hasChanges()) {
             $commitMessage = "ONE-11445 [$groupName] apply " . $ruleName . " rule.";
             echo "Testing the app after changes..";
-            if (Artisan::test()->succeeded()) {
+            if (Tester::test($this->config['projectType'])->succeeded()) {
                 echo coloredText(" Success!\n", "green");
 
-                Git::addAll();
-                Git::commit($commitMessage);
+                Git::commitAll($commitMessage);
                 echo "Changes are commited!\n";
 
                 if (!$this->db->isRuleReviewed($ruleName)) {
@@ -86,24 +83,53 @@ final class IntegrateRector {
         echo horizontalLine();
     }
 
+    public function applySetOfRules(array $ruleSet, string $name): void {
+        echo coloredText("Going to apply rules from the $name rule set:\n");
+        foreach ($ruleSet as $index => $rule) {
+            $this->applyRule($rule, $index, $name);
+        }
+    }
+
     private function installPackages(): void {
         echo coloredText("Installing rector packages with composer.. :\n");
-        (new ShellCommand('powershell.exe -Command "(Get-Content composer.json) -replace \'\\^v1\\.2\\.0\', \'2.0.1\' | Set-Content composer.json"'))->run();
-        Composer::update();
-        if (Composer::require(["rector/rector", "driftingly/rector-laravel"], dev: true)->succeeded()) echo coloredText("Done!\n", "green");
+
+        $packages = ["rector/rector"];
+        if ($this->config["projectDir"] === "laravel") $packages[] = "driftingly/rector-laravel";
+
+        if (Composer::require($packages, dev: true)->succeeded()) echo coloredText("Done!\n", "green");
         else echo coloredText(" Fail!\n", "red");
 
-        Git::addAll()->run();
-        Git::commit("ONE-11445 add rector and driftingly/rector-laravel as dev dependencies.");
+        Git::commitAll("ONE-11445 add rector and driftingly/rector-laravel as dev dependencies.");
+    }
+
+    private function updateConfigPackage(): void {
+        echo coloredText("Updating the configuration package.. :\n");
+
+        new ShellCommand('powershell.exe -Command "(Get-Content composer.json) -replace \'\\^v1\\.2\\.0\', \'^v2.0.3\' | Set-Content composer.json"')->run();
+        Composer::update();
+        new ShellCommand('powershell -Command "(Get-Content phpstan.neon) -replace \'/phpstan\\.neon\', \'/phpstan-laravel.neon\' | Set-Content phpstan.neon"')->run();
+
+        Git::commitAll("ONE-11445 update the configuration package to the newest version.");
     }
 
     private function copyConfiguration(): void {
         echo coloredText("Copying rector configuration.. : ");
-        new ShellCommand('copy "' . $this->config["toolDir"] . '\\src\\rectorConfigExampleLaravel.php" "' . $this->config["projectDir"] . '\\rector.php"')->run()->getOutput();
+
+        switch ($this->config['projectType']) {
+            case "laravel":
+                $fileName = "rectorConfigExample-laravel.php";
+                break;
+            case "package":
+                $fileName = "rectorConfigExample-packages.php";
+                break;
+            default:
+                $fileName = "unknownProjectType.php";
+        }
+
+        new ShellCommand('copy "' . $this->config["toolDir"] . '\\src\\DefaultConfigs\\' . $fileName . '" "' . $this->config["projectDir"] . '\\rector.php"')->run()->getOutput();
         echo coloredText("Done!\n", "green");
 
-        Git::addAll()->run();
-        Git::commit("ONE-11445 add rector base configuration.");
+        Git::commitAll("ONE-11445 add rector base configuration (to be cleaned later).");
     }
 
     public function skipFailedRulesInRectorConf(): void {
@@ -121,8 +147,7 @@ final class IntegrateRector {
         Rector::process(clearCache: true, path: "\"". $this->config["projectDir"] . '/rector.php' . "\"");
 
         chdir($this->config["projectDir"]);
-        Git::addAll();
-        Git::commit("ONE-11445 ignore rules that broke the project.");
+        Git::commitAll("ONE-11445 ignore rules that broke the project.");
     }
 }
 

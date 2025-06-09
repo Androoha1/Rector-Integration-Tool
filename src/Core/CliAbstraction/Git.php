@@ -12,6 +12,12 @@ final class Git {
     static public function commit(string $message): ShellCommand {
         return new ShellCommand("git commit -m \"" . $message . "\"")->run();
     }
+
+    static public function commitAll(string $message): ShellCommand {
+        self::addAll();
+        return self::commit($message);
+    }
+
     static function hasChanges(): bool {
         return (new ShellCommand("git status --porcelain")->run()->getOutput() !== []);
     }

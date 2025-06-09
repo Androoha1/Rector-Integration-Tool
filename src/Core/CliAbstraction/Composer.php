@@ -10,7 +10,7 @@ final class Composer {
     }
 
     static public function update(): ShellCommand {
-        return new ShellCommand("composer update")->run();
+        return new ShellCommand("composer update --no-interaction")->run();
     }
 
     static public function require(array $package, bool $dev = false): ShellCommand {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use DiviGroup\Configurations\Rector\RectorConfig;
 
-return (new RectorConfig)
-    ->configureWithLaravel(__DIR__)
+return RectorConfig::configureWithLaravel(__DIR__)
     ->withSkip([])
-    ->withCache();
+    ->withCache()
+    ->withoutParallel();
