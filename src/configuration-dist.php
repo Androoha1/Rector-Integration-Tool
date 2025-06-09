@@ -15,10 +15,12 @@ $rectorPresets = require __DIR__ . "/RuleSets/rectorPreset.php";
 $phpunitCodeQualityRules = require __DIR__ . "/RuleSets/phpUnitCodeQuality.php";
 $driftinglyRectorLaravelRules = require __DIR__ . "/RuleSets/driftinglyRectorLaravel.php";
 
-
 $config = [
-    "projectDir" => "your/path/is/unique",
-    "ruleSets" => array(
+    "toolDir" => "path-to-the-root-of-the-tool",
+    "projectDir" => "your-path-is-unique",
+    "jiraId" => "ONE-11594",
+    "projectType" => "package",
+    "ruleSets" => [
         "php84-upgrade" => $phpUpgradeRules,
         "dead-code" => $deadCodeRules,
         "type-declaration" => $typeDeclarationRules,
@@ -30,9 +32,8 @@ $config = [
         "rector-preset" => $rectorPresets,
         "phpunit-code-quality" => $phpunitCodeQualityRules,
         "code-quality" => $codeQualityRules,
-        "driftingly-laravel" => $driftinglyRectorLaravelRules,
-    ),
-    "useRectorCache" => false
+//        "driftingly-laravel" => $driftinglyRectorLaravelRules,
+    ],
 ];
 
 return $config;
