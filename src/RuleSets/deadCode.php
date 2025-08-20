@@ -6,6 +6,7 @@ return [
     'Rector\DeadCode\Rector\Assign\RemoveDoubleAssignRector',
     'Rector\DeadCode\Rector\Assign\RemoveUnusedVariableAssignRector',
     'Rector\DeadCode\Rector\Block\ReplaceBlockToItsStmtsRector',
+    'Rector\DeadCode\Rector\Block\ReplaceBlockToItsStmtsRector',
     'Rector\DeadCode\Rector\BooleanAnd\RemoveAndTrueRector',
     'Rector\DeadCode\Rector\Cast\RecastingRemovalRector',
     'Rector\DeadCode\Rector\ClassConst\RemoveUnusedPrivateClassConstantRector',

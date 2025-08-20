@@ -35,6 +35,13 @@ class RectorIntegrateDb
         return $stmt->fetchColumn() > 0;
     }
 
+    public function getAllRecords(string $table): array {
+        $stmt = $this->pdo->prepare("SELECT id, rule_name, project FROM $table ORDER BY id ASC");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
     public function moveToReviewed(string $ruleName): bool
     {
         $this->pdo->beginTransaction();

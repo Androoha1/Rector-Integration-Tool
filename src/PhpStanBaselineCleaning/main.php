@@ -1,7 +1,7 @@
 <?php
 
 $isLogging = true;
-$projectWebDir = "C:\Users\andrii.posternak\Desktop\BTA_projects\services\links-server\web";
+$projectWebDir = "C:\Users\andrii.posternak\Desktop\BTA_projects\Mobile-App\\rest-api\web";
 chdir($projectWebDir);
 
 function escapeForNeon(string $text): string {

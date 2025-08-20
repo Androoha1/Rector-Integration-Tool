@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56f88f34f6c6bf9bb9511dc36c5d700b",
+    "content-hash": "9b04ca2207039a8dcd0a6fa9e8ba49bf",
     "packages": [
         {
             "name": "driftingly/rector-laravel",
@@ -46,12 +46,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "c3f27ec99a396f2010c93c3997fbe310103bdd5e"
+                "reference": "e157675524723e96219b2d8e71cf7a471a04aef2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/c3f27ec99a396f2010c93c3997fbe310103bdd5e",
-                "reference": "c3f27ec99a396f2010c93c3997fbe310103bdd5e",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e157675524723e96219b2d8e71cf7a471a04aef2",
+                "reference": "e157675524723e96219b2d8e71cf7a471a04aef2",
                 "shasum": ""
             },
             "require": {
@@ -97,7 +97,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-05-28T09:11:26+00:00"
+            "time": "2025-06-17T19:06:07+00:00"
         },
         {
             "name": "rector/rector",
@@ -223,11 +223,14 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "phpstan/phpstan": 20,
         "rector/rector": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": {},
+    "platform": {
+        "ext-pdo": "*"
+    },
     "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }
