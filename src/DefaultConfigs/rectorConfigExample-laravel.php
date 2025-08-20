@@ -6,5 +6,4 @@ use DiviGroup\Configurations\Rector\RectorConfig;
 
 return RectorConfig::configureWithLaravel(__DIR__)
     ->withSkip([])
-    ->withCache()
     ->withoutParallel();
