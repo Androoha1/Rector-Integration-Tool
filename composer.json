@@ -1,7 +1,16 @@
 {
     "name": "androoha/rector-integration-tool",
     "type": "project",
-    "license": "MIT",
+    "authors": [{ "name": "Andrii Posternak" }],
+    "require": {
+        "rector/rector": "^2.0.0",
+        "driftingly/rector-laravel": "^2.0.0",
+        "ext-pdo": "*"
+    },
+    "require-dev": {
+        "nikic/php-parser": "^5.4",
+        "phpstan/phpstan": "^2.0.0"
+    },
     "autoload": {
         "psr-4": {
             "RectorIntegrationTool\\": "src/",
@@ -11,20 +20,5 @@
             "src/Core/HelperFunctions/coloredText.php",
             "src/Core/HelperFunctions/horizontalLine.php"
         ]
-    },
-    "authors": [
-        {
-            "name": "Andrii Posternak"
-        }
-    ],
-    "minimum-stability": "dev",
-    "require": {
-        "rector/rector": "dev-main",
-        "driftingly/rector-laravel": "^0.27.0",
-        "ext-pdo": "*"
-    },
-    "require-dev": {
-        "nikic/php-parser": "^5.4",
-        "phpstan/phpstan": "2.1.x-dev"
     }
 }
