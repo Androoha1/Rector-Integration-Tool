@@ -102,7 +102,7 @@ return [
     'Rector\Php81\Rector\Array_\FirstClassCallableRector',
     'Rector\Php81\Rector\Class_\MyCLabsClassToEnumRector',
     'Rector\Php81\Rector\Class_\SpatieEnumClassToEnumRector',
-    'Rector\Php81\Rector\FuncCall\NullToStrictStringFuncCallArgRector',
+//    'Rector\Php81\Rector\FuncCall\NullToStrictStringFuncCallArgRector',
     'Rector\Php81\Rector\MethodCall\MyCLabsMethodCallToEnumConstRector',
     'Rector\Php81\Rector\MethodCall\SpatieEnumMethodCallToEnumConstRector',
     'Rector\Php81\Rector\New_\MyCLabsConstructorCallToEnumFromRector',
