@@ -6,13 +6,18 @@
         "configurations": {
             "type": "vcs",
             "url": "git@gitlab.bta.lv:packages/configurations.git"
+        },
+        "commandeer": {
+            "type": "vcs",
+            "url": "https://github.com/Androoha1/Commandeer"
         }
     },
     "require": {
         "ext-pdo": "*",
         "divi-group/configurations": "^3.1.0",
         "driftingly/rector-laravel": "^2.0.0",
-        "rector/rector": "^2.0.0"
+        "rector/rector": "^2.0.0",
+        "posternak/commandeer": "*"
     },
     "require-dev": {
         "nikic/php-parser": "^5.4",
@@ -26,5 +31,6 @@
         "files": [
             "src/Core/HelperFunctions/coloredText.php"
         ]
-    }
+    },
+    "minimum-stability": "dev"
 }

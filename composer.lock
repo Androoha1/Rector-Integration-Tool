@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6edcab01a3a67f54bbfcd004597830be",
+    "content-hash": "ab2f30c3f652bc9cd42ae12734ce19a7",
     "packages": [
         {
             "name": "brick/math",
@@ -2843,6 +2843,57 @@
                 "source": "https://github.com/phpstan/phpstan-strict-rules/tree/2.0.6"
             },
             "time": "2025-07-21T12:19:29+00:00"
+        },
+        {
+            "name": "posternak/commandeer",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Androoha1/Commandeer.git",
+                "reference": "d5dbd753326bccd516ab004b8f734c14e65d3834"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Androoha1/Commandeer/zipball/d5dbd753326bccd516ab004b8f734c14e65d3834",
+                "reference": "d5dbd753326bccd516ab004b8f734c14e65d3834",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.1",
+                "phpunit/phpunit": "^12.4"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Posternak\\Commandeer\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "phpunit --testdox"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrii Posternak",
+                    "email": "posternak.andrii1@gmail.com"
+                }
+            ],
+            "description": "A fluent API to execute shell commands.",
+            "support": {
+                "source": "https://github.com/Androoha1/Commandeer/tree/main",
+                "issues": "https://github.com/Androoha1/Commandeer/issues"
+            },
+            "time": "2025-11-19T09:11:33+00:00"
         },
         {
             "name": "psr/clock",
@@ -6655,7 +6706,7 @@
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
