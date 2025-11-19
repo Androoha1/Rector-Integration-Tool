@@ -21,7 +21,8 @@
     },
     "require-dev": {
         "nikic/php-parser": "^5.4",
-        "phpstan/phpstan": "^2.0.0"
+        "phpstan/phpstan": "^2.0.0",
+        "phpunit/phpunit": "^13.0@dev"
     },
     "autoload": {
         "psr-4": {
@@ -32,6 +33,11 @@
             "src/Core/HelperFunctions/coloredText.php",
             "src/Core/HelperFunctions/legacyLogic.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
     },
     "minimum-stability": "dev"
 }
