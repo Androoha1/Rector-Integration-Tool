@@ -7,7 +7,7 @@ namespace RectorIntegrationTool;
 use Posternak\Commandeer\Builders\Composer;
 use Posternak\Commandeer\Builders\Git;
 use Posternak\Commandeer\Builders\Rector;
-use RectorIntegrationTool\Core\CliAbstraction\ShellCommand;
+use Posternak\Commandeer\ShellCommand;
 use RectorIntegrationTool\Core\Message;
 use RectorIntegrationTool\database\RectorIntegrateDb;
 use RectorIntegrationTool\Core\Tester;
