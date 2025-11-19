@@ -2850,12 +2850,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Androoha1/Commandeer.git",
-                "reference": "d5dbd753326bccd516ab004b8f734c14e65d3834"
+                "reference": "1181243ddb286b05cff414d419ff1e6c840b8675"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Androoha1/Commandeer/zipball/d5dbd753326bccd516ab004b8f734c14e65d3834",
-                "reference": "d5dbd753326bccd516ab004b8f734c14e65d3834",
+                "url": "https://api.github.com/repos/Androoha1/Commandeer/zipball/1181243ddb286b05cff414d419ff1e6c840b8675",
+                "reference": "1181243ddb286b05cff414d419ff1e6c840b8675",
                 "shasum": ""
             },
             "require-dev": {
@@ -2893,7 +2893,7 @@
                 "source": "https://github.com/Androoha1/Commandeer/tree/main",
                 "issues": "https://github.com/Androoha1/Commandeer/issues"
             },
-            "time": "2025-11-19T09:11:33+00:00"
+            "time": "2025-11-19T10:02:01+00:00"
         },
         {
             "name": "psr/clock",
