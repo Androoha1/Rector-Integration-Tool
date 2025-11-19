@@ -2,3 +2,5 @@
 /.idea
 /vendor
 /temp
+
+/src/RuleSets/custom.php
