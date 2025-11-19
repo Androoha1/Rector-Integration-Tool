@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace RectorIntegrationTool;
 
-use Posternak\Commandeer\Facades\Git;
-use RectorIntegrationTool\Core\CliAbstraction\Composer;
-use RectorIntegrationTool\Core\CliAbstraction\Rector;
+use Posternak\Commandeer\Builders\Composer;
+use Posternak\Commandeer\Builders\Git;
+use Posternak\Commandeer\Builders\Rector;
 use RectorIntegrationTool\Core\CliAbstraction\ShellCommand;
 use RectorIntegrationTool\Core\Message;
 use RectorIntegrationTool\database\RectorIntegrateDb;
@@ -94,16 +94,16 @@ final class IntegrateRector {
         $packages = ["rector/rector"];
         if ($this->config["projectDir"] === "laravel") $packages[] = "driftingly/rector-laravel";
 
-        if (Composer::require($packages, dev: true)->succeeded()) echo coloredText("Done!\n", "green");
+        if (Composer::require(...$packages)->__dev()->run()->succeeded()) echo coloredText("Done!\n", "green");
         else echo coloredText(" Fail!\n", "red");
 
-        Git::commitAll("ONE-11445 add rector dependencies.");
+        Git::addEverythingAndCommitWithMessage("ONE-11445 add rector dependencies.");
     }
 
     private function updateConfigPackage(): void {
         Message::updateConfPackage();
 
-        Composer::updatePackageVersionConstraint(
+        \RectorIntegrationTool\Core\CliAbstraction\Composer::updatePackageVersionConstraint(
             $this->config["projectDir"] . '/composer.json',
             "divi-group/configurations",
             "dev-ONE-12064-custom-rector-rules",
@@ -111,7 +111,7 @@ final class IntegrateRector {
         );
         Composer::update();
 
-        Git::commitAll("ONE-11445 update the configuration package.");
+        Git::addEverythingAndCommitWithMessage("ONE-11445 update the configuration package.");
     }
 
     private function copyConfiguration(): void {
@@ -128,10 +128,10 @@ final class IntegrateRector {
                 $fileName = "unknownProjectType.php";
         }
 
-        new ShellCommand('copy "' . $this->config["toolDir"] . '\\src\\DefaultConfigs\\' . $fileName . '" "' . $this->config["projectDir"] . '\\rector.php"')->run()->getOutput();
+        new ShellCommand('copy "' . $this->config["toolDir"] . '\\src\\DefaultConfigs\\' . $fileName . '" "' . $this->config["projectDir"] . '\\rector.php"')->run();
         Message::done();
 
-        Git::commitAll("ONE-11445 add rector base configuration (to be cleaned later).");
+        Git::addEverythingAndCommitWithMessage("ONE-11445 add rector base configuration (to be cleaned later).");
     }
 
     public function skipFailedRulesInRectorConf(): void {
@@ -142,10 +142,9 @@ final class IntegrateRector {
         file_put_contents($file, "<?php\n\nreturn $export;\n");
 
         chdir($this->config["toolDir"]);
-        Rector::process(clearCache: true, path: "\"". $this->config["projectDir"] . '/rector.php' . "\"");
-        Rector::process(clearCache: true, path: "\"". $this->config["projectDir"] . '/rector.php' . "\"");
+        Rector::process("\"". $this->config["projectDir"] . '/rector.php' . "\"")->__clear_cache();
 
         chdir($this->config["projectDir"]);
-        Git::commitAll("ONE-11445 ignore rules that broke the project.");
+        Git::addEverythingAndCommitWithMessage("ONE-11445 ignore rules that broke the project.");
     }
 }
