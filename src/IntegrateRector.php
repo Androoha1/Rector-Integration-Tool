@@ -12,6 +12,8 @@ use RectorIntegrationTool\Core\Message;
 use RectorIntegrationTool\database\RectorIntegrateDb;
 use RectorIntegrationTool\Core\Tester;
 
+use function Safe\chdir;
+
 final class IntegrateRector {
     private array $config = [];
     private bool $rectorIsSatisfied = true;
@@ -103,7 +105,8 @@ final class IntegrateRector {
     private function updateConfigPackage(): void {
         Message::updateConfPackage();
 
-        \RectorIntegrationTool\Core\CliAbstraction\Composer::updatePackageVersionConstraint(
+        // TODO: don't use this legacy logic function
+        updatePackageVersionConstraint(
             $this->config["projectDir"] . '/composer.json',
             "divi-group/configurations",
             "dev-ONE-12064-custom-rector-rules",

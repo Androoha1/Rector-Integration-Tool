@@ -29,7 +29,8 @@
             "RectorIntegrationTool\\database\\": "database/"
         },
         "files": [
-            "src/Core/HelperFunctions/coloredText.php"
+            "src/Core/HelperFunctions/coloredText.php",
+            "src/Core/HelperFunctions/legacyLogic.php"
         ]
     },
     "minimum-stability": "dev"
