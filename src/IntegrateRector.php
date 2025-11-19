@@ -12,6 +12,7 @@ use RectorIntegrationTool\Core\Message;
 use RectorIntegrationTool\database\RectorIntegrateDb;
 use RectorIntegrationTool\Core\Tester;
 
+use RectorIntegrationTool\Libraries\Projects\PhpProject;
 use function Safe\chdir;
 
 final class IntegrateRector {
@@ -27,9 +28,9 @@ final class IntegrateRector {
 
     public function integrate(): void {
         putenv("PROJECT_NAME=" . (($projectName = basename($this->config["projectDir"])) === "web") ? basename($projectName) : $projectName);
-        if (is_dir($this->config["projectDir"] . "/web")) $this->config["projectDir"] .= "/web";
-        chdir($this->config["projectDir"]);
-        Git::checkoutNewBranch($this->config["jiraId"] . "-integrate-rector-tool");
+        /* @var $project PhpProject */
+        $project = $this->config['project'];
+        $project->startNewDevelopmentBranch($this->config["jiraId"] . "-integrate-rector-tool");
 
         $this->installPackages();
         $this->updateConfigPackage();
