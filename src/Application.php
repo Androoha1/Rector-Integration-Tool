@@ -15,7 +15,7 @@ use RectorIntegrationTool\Core\Tester;
 use RectorIntegrationTool\Libraries\Projects\PhpProject;
 use function Safe\chdir;
 
-final class IntegrateRector {
+final class Application {
     private array $config = [];
     private bool $rectorIsSatisfied = true;
     private array $failedRules = [];

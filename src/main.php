@@ -2,6 +2,6 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use RectorIntegrationTool\IntegrateRector;
+use RectorIntegrationTool\Application;
 
-new IntegrateRector()->integrate();
+new Application()->integrate();
