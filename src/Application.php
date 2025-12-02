@@ -51,7 +51,7 @@ final class Application {
         Message::applyRule($ruleID, $ruleName);
 
         $attempt = 0;
-        while (++$attempt < 5 && !Rector::process(specificRule: $ruleName, clearCache: true)->succeeded()) {
+        while (++$attempt < 5 && !Rector::process()->__only($ruleName)->__clear_cache()->succeeded()) {
             Message::rectorFailed();
         }
         if ($attempt === 5) Message::rectorFailedCompletely();
