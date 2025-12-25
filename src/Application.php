@@ -27,23 +27,44 @@ final class Application {
     }
 
     public function integrate(): void {
-        putenv("PROJECT_NAME=" . (($projectName = basename($this->config["projectDir"])) === "web") ? basename($projectName) : $projectName);
-        /* @var $project PhpProject */
-        $project = $this->config['project'];
-        $project->startNewDevelopmentBranch($this->config["jiraId"] . "-integrate-rector-tool");
+        if ($notDone = true) {
+            /* @var $project PhpProject */
+            $project = $this->config['project'];
+            $project->startNewDevelopmentBranch($this->config['vcsBranchName']);
+            putenv("PROJECT_NAME=" . basename($this->config['project']->getProjectDir()));
 
-        $this->installPackages();
-        $this->updateConfigPackage();
-        $this->copyConfiguration();
+            $this->installPackages();
 
-        do {
-            $this->rectorIsSatisfied = true;
-            foreach ($this->config["ruleSets"] as $name => $ruleSet) {
-                $this->applySetOfRules($ruleSet, $name);
-            }
-        } while (false);
+            $this->addInitialRectorConfigFile();
+        }
 
-        $this->skipFailedRulesInRectorConf();
+        $dd = 5;
+
+
+
+//        $this->installPackages();
+//        $this->updateConfigPackage();
+//        $this->copyConfiguration();
+//
+//        do {
+//            $this->rectorIsSatisfied = true;
+//            foreach ($this->config["ruleSets"] as $name => $ruleSet) {
+//                $this->applySetOfRules($ruleSet, $name);
+//            }
+//        } while (false);
+//
+//        $this->skipFailedRulesInRectorConf();
+    }
+
+    private function addInitialRectorConfigFile(): void {
+        Message::copyConfiguration();
+        copy(
+            $this->config["toolDir"] . '\\src\\DefaultConfigs\\rectorConfigExample-general-vanillaPHP.php',
+            $this->config["project"]->getProjectWebDir() . '\\rector.php'
+        );
+        Message::done();
+
+        Git::addEverythingAndCommitWithMessage("Add rector base configuration.");
     }
 
     public function applyRule(string $ruleName, int $ruleID, string $groupName): void {
@@ -95,12 +116,14 @@ final class Application {
         Message::installingPackages();
 
         $packages = ["rector/rector"];
-        if ($this->config["projectDir"] === "laravel") $packages[] = "driftingly/rector-laravel";
+        if ($this->config["projectType"] === "laravel") $packages[] = "driftingly/rector-laravel";
+
+        Composer::require(...$packages)->__dev()->run()->succeeded();
 
         if (Composer::require(...$packages)->__dev()->run()->succeeded()) echo coloredText("Done!\n", "green");
         else echo coloredText(" Fail!\n", "red");
 
-        Git::addEverythingAndCommitWithMessage("ONE-11445 add rector dependencies.");
+        Git::addEverythingAndCommitWithMessage("Install rector packages.");
     }
 
     private function updateConfigPackage(): void {
@@ -132,7 +155,7 @@ final class Application {
                 $fileName = "unknownProjectType.php";
         }
 
-        new ShellCommand('copy "' . $this->config["toolDir"] . '\\src\\DefaultConfigs\\' . $fileName . '" "' . $this->config["projectDir"] . '\\rector.php"')->run();
+        new ShellCommand('copy "' . $this->config["toolDir"] . '\\src\\DefaultConfigs\\' . $fileName . '" "' . $this->config["project"]->getProjectWebDir() . '\\rector.php"')->run();
         Message::done();
 
         Git::addEverythingAndCommitWithMessage("ONE-11445 add rector base configuration (to be cleaned later).");
