@@ -7,7 +7,6 @@ namespace RectorIntegrationTool;
 use Posternak\Commandeer\Builders\Composer;
 use Posternak\Commandeer\Builders\Git;
 use Posternak\Commandeer\Builders\Rector;
-use Posternak\Commandeer\ShellCommand;
 use Posternak\ConsolePrinter\Color;
 use Posternak\ConsolePrinter\Printer;
 use RectorIntegrationTool\Core\Message;
@@ -31,33 +30,32 @@ final class Application {
     }
 
     public function integrate(): void {
-        if ($notDone = true) {
+        if ($notDone = false) {
             /* @var $project PhpProject */
             $project = $this->config['project'];
             $project->startNewDevelopmentBranch($this->config['vcsBranchName']);
             putenv("PROJECT_NAME=" . basename($this->config['project']->getProjectDir()));
 
             $this->installPackages();
+//            $this->updateConfigPackage(); // for BTA projects only
 
             $this->addInitialRectorConfigFile();
         }
+        else {
+            $project = $this->config['project'];
+            chdir($project->getProjectWebDir());
+        }
+
+        do {
+            $this->rectorIsSatisfied = true;
+            foreach ($this->config["ruleSets"] as $name => $ruleSet) {
+                $this->applySetOfRules($ruleSet, $name);
+            }
+        } while (false);
 
         $dd = 5;
 
-
-
-//        $this->installPackages();
-//        $this->updateConfigPackage();
-//        $this->copyConfiguration();
-//
-//        do {
-//            $this->rectorIsSatisfied = true;
-//            foreach ($this->config["ruleSets"] as $name => $ruleSet) {
-//                $this->applySetOfRules($ruleSet, $name);
-//            }
-//        } while (false);
-//
-//        $this->skipFailedRulesInRectorConf();
+        $this->skipFailedRulesInRectorConf();
     }
 
     private function addInitialRectorConfigFile(): void {
@@ -71,36 +69,36 @@ final class Application {
         Git::addEverythingAndCommitWithMessage("Add rector base configuration.");
     }
 
-    public function applyRule(string $ruleName, int $ruleID, string $groupName): void {
+    public function applyRule(string $ruleName, int $ruleID, string $ruleSet): void {
         $this->message->horizontalLine();
         $this->message->applyRule($ruleID, $ruleName);
 
         $attempt = 0;
-        while (++$attempt < 5 && !Rector::process()->__only($ruleName)->__clear_cache()->succeeded()) {
+        while (++$attempt < 5 && !Rector::process()->__only($ruleName)->__clear_cache()->run()->succeeded()) {
             $this->message->rectorFailed();
         }
         if ($attempt === 5) $this->message->rectorFailedCompletely();
         $this->message->done();
 
         if (Git::hasChanges()) {
-            $commitMessage = "ONE-11445 [$groupName] apply " . $ruleName . " rule.";
+            $commitMessage = "[$ruleSet] apply " . $ruleName . " rule.";
             $this->message->testingApp();
             if (Tester::test($this->config['projectType'])->succeeded()) {
                 $this->message->success();
 
-                Git::commitAll($commitMessage);
+                Git::addEverythingAndCommitWithMessage($commitMessage);
                 $this->message->commitedChanges();
 
-                if (!$this->db->isRuleReviewed($ruleName)) {
-                    $this->db->addNotReviewedRule($ruleName, getenv('PROJECT_NAME'));
-                    $this->message->ruleAddedToNotReviewed();
-                }
+//                if (!$this->db->isRuleReviewed($ruleName)) {
+//                    $this->db->addNotReviewedRule($ruleName, getenv('PROJECT_NAME'));
+//                    $this->message->ruleAddedToNotReviewed();
+//                }
 
                 $this->rectorIsSatisfied = false;
             }
             else {
                 $this->message->testsFailed();
-                Git::clearAllChanges();
+                Git::reset()->__hard('HEAD');
                 if (!in_array($ruleName, $this->failedRules)) $this->failedRules[] = $ruleName;
             }
         }
@@ -124,8 +122,8 @@ final class Application {
 
         Composer::require(...$packages)->__dev()->run()->succeeded();
 
-        if (Composer::require(...$packages)->__dev()->run()->succeeded()) Message::done();
-        new Printer()->println(" Fail!", [Color::RED]);
+        if (Composer::require(...$packages)->__dev()->run()->succeeded()) $this->message->done();
+        else new Printer()->println(" Fail!", [Color::RED]);
 
         Git::addEverythingAndCommitWithMessage("Install rector packages.");
     }
@@ -143,26 +141,6 @@ final class Application {
         Composer::update();
 
         Git::addEverythingAndCommitWithMessage("ONE-11445 update the configuration package.");
-    }
-
-    private function copyConfiguration(): void {
-        $this->message->copyConfiguration();
-
-        switch ($this->config['projectType']) {
-            case "laravel":
-                $fileName = "rectorConfigExample-laravel.php";
-                break;
-            case "package":
-                $fileName = "rectorConfigExample-packages.php";
-                break;
-            default:
-                $fileName = "unknownProjectType.php";
-        }
-
-        new ShellCommand('copy "' . $this->config["toolDir"] . '\\src\\DefaultConfigs\\' . $fileName . '" "' . $this->config["project"]->getProjectWebDir() . '\\rector.php"')->run();
-        $this->message->done();
-
-        Git::addEverythingAndCommitWithMessage("ONE-11445 add rector base configuration (to be cleaned later).");
     }
 
     public function skipFailedRulesInRectorConf(): void {

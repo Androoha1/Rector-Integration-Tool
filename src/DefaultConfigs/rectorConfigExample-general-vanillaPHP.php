@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\Config\RectorConfig;
 
 return RectorConfig::configure()
@@ -25,4 +26,8 @@ return RectorConfig::configure()
         carbon: true,
         rectorPreset: true,
         phpunitCodeQuality: true,
+    )
+    ->withCache(
+        cacheDirectory: __DIR__ . '/cache',
+        cacheClass: FileCacheStorage::class
     );
