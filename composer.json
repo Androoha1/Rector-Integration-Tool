@@ -10,6 +10,10 @@
         "commandeer": {
             "type": "vcs",
             "url": "https://github.com/Androoha1/Commandeer"
+        },
+        "console-printer": {
+            "type": "vcs",
+            "url": "https://github.com/Androoha1/console-printer"
         }
     },
     "require": {
@@ -17,7 +21,8 @@
         "divi-group/configurations": "^3.1.0",
         "driftingly/rector-laravel": "^2.0.0",
         "rector/rector": "^2.0.0",
-        "posternak/commandeer": "*"
+        "posternak/commandeer": "dev-main",
+        "posternak/console-printer": "dev-main"
     },
     "require-dev": {
         "nikic/php-parser": "^5.4",
@@ -30,7 +35,6 @@
             "RectorIntegrationTool\\database\\": "database/"
         },
         "files": [
-            "src/Core/HelperFunctions/coloredText.php",
             "src/Core/HelperFunctions/legacyLogic.php"
         ]
     },

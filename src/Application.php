@@ -8,6 +8,8 @@ use Posternak\Commandeer\Builders\Composer;
 use Posternak\Commandeer\Builders\Git;
 use Posternak\Commandeer\Builders\Rector;
 use Posternak\Commandeer\ShellCommand;
+use Posternak\ConsolePrinter\Color;
+use Posternak\ConsolePrinter\Printer;
 use RectorIntegrationTool\Core\Message;
 use RectorIntegrationTool\database\RectorIntegrateDb;
 use RectorIntegrationTool\Core\Tester;
@@ -120,8 +122,8 @@ final class Application {
 
         Composer::require(...$packages)->__dev()->run()->succeeded();
 
-        if (Composer::require(...$packages)->__dev()->run()->succeeded()) echo coloredText("Done!\n", "green");
-        else echo coloredText(" Fail!\n", "red");
+        if (Composer::require(...$packages)->__dev()->run()->succeeded()) Message::done();
+        new Printer()->println(" Fail!", [Color::RED]);
 
         Git::addEverythingAndCommitWithMessage("Install rector packages.");
     }

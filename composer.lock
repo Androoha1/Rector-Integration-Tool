@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5babd9956c695865e1d4ae276048cd0c",
+    "content-hash": "cb575dd449bbb4a757adfb67c588f7d8",
     "packages": [
         {
             "name": "brick/math",
@@ -2850,19 +2850,26 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Androoha1/Commandeer.git",
-                "reference": "83130e996fd6b1b431d733d575423ebb803f2ec8"
+                "reference": "8e718cd6fc98fc1440f1a2af12f0384987e2f670"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Androoha1/Commandeer/zipball/83130e996fd6b1b431d733d575423ebb803f2ec8",
-                "reference": "83130e996fd6b1b431d733d575423ebb803f2ec8",
+                "url": "https://api.github.com/repos/Androoha1/Commandeer/zipball/8e718cd6fc98fc1440f1a2af12f0384987e2f670",
+                "reference": "8e718cd6fc98fc1440f1a2af12f0384987e2f670",
                 "shasum": ""
+            },
+            "require": {
+                "ext-readline": "*",
+                "posternak/console-printer": "*"
             },
             "require-dev": {
                 "phpstan/phpstan": "^2.1",
                 "phpunit/phpunit": "^12.4"
             },
             "default-branch": true,
+            "bin": [
+                "bin/commandeer"
+            ],
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -2893,7 +2900,55 @@
                 "source": "https://github.com/Androoha1/Commandeer/tree/main",
                 "issues": "https://github.com/Androoha1/Commandeer/issues"
             },
-            "time": "2025-12-02T10:03:27+00:00"
+            "time": "2025-12-22T14:48:19+00:00"
+        },
+        {
+            "name": "posternak/console-printer",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Androoha1/console-printer.git",
+                "reference": "a0fb55fe51c5fb2d5db4af213a9ac1596a21d0e7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Androoha1/console-printer/zipball/a0fb55fe51c5fb2d5db4af213a9ac1596a21d0e7",
+                "reference": "a0fb55fe51c5fb2d5db4af213a9ac1596a21d0e7",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.4"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.1",
+                "phpunit/phpunit": "^12.4"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Posternak\\ConsolePrinter\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrii Posternak"
+                }
+            ],
+            "description": "A tool to print messages in the terminal.",
+            "support": {
+                "source": "https://github.com/Androoha1/console-printer/tree/main",
+                "issues": "https://github.com/Androoha1/console-printer/issues"
+            },
+            "time": "2025-12-22T14:22:44+00:00"
         },
         {
             "name": "psr/clock",
@@ -8386,7 +8441,9 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "phpunit/phpunit": 20
+        "phpunit/phpunit": 20,
+        "posternak/commandeer": 20,
+        "posternak/console-printer": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

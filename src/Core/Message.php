@@ -2,11 +2,16 @@
 
 namespace RectorIntegrationTool\Core;
 
+use Posternak\ConsolePrinter\Color;
+use Posternak\ConsolePrinter\Printer;
+
 final class Message
 {
+    private static Printer $printer;
+
     public static function applySetOfRules(string $name): void
     {
-        echo coloredText("Going to apply rules from the {$name} rule set:\n");
+        self::$printer->println("{Going to apply rules from the {{$name}} rule set:}", [Color::YELLOW, Color::RED]);
     }
 
     public static function horizontalLine(): void
@@ -16,22 +21,22 @@ final class Message
 
     public static function applyRule(int $ruleID, string $ruleName): void
     {
-        echo "$ruleID)" . coloredText($ruleName, "yellow") . " is being applied to your codebase..\n";
+        self::$printer->println("$ruleID){{$ruleName}} is being applied to your codebase..", [Color::YELLOW]);
     }
 
     public static function rectorFailed(): void
     {
-        echo coloredText(" Rector failed!\n", "red");
+        self::$printer->println("Rector failed!", [Color::RED]);
     }
 
     public static function rectorFailedCompletely(): void
     {
-        coloredText(" Rector failed completely..! (maybe the rule is ignored)\n", "red");
+        self::$printer->println("Rector failed completely..! (maybe the rule is ignored)", [Color::RED]);
     }
 
     public static function done(): void
     {
-        echo " Done!\n";
+        self::$printer->println(" Done!", [Color::GREEN]);
     }
 
     public static function testingApp(): void
@@ -41,7 +46,7 @@ final class Message
 
     public static function success(): void
     {
-        echo coloredText(" Success!\n", "green");
+        self::$printer->println("Success!", [Color::GREEN]);
     }
 
     public static function commitedChanges(): void
@@ -56,7 +61,7 @@ final class Message
 
     public static function testsFailed(): void
     {
-        echo coloredText(" Fail!\n", "red");
+        self::$printer->println(" Fail!", [Color::RED]);
         echo "Changes will not be commited because tests didn't pass.\n";
     }
 
@@ -67,22 +72,22 @@ final class Message
 
     public static function installingPackages(): void
     {
-        echo coloredText("Installing rector packages with composer.. :\n");
+        self::$printer->println("Installing packages...", [Color::SOFT_BLUE]);
     }
 
     public static function updateConfPackage(): void
     {
-        echo coloredText("Updating the configuration package.. :\n");
+        self::$printer->println("Updating the configuration package.. :", [Color::SOFT_BLUE]);
     }
 
     public static function copyConfiguration(): void
     {
-        echo coloredText("Copying rector configuration.. : ");
+        self::$printer->print("Copying rector configuration.. : ", [Color::SOFT_BLUE]);
     }
 
     public static function skipFailedRules(array $failedRules): void
     {
-        echo coloredText("Ignoring bad rules in the rector configuration. Here is the list of bad rules:\n");
+        self::$printer->println("Ignoring bad rules in the rector configuration. Here is the list of bad rules:", [Color::SOFT_BLUE]);
 
         foreach ($failedRules as $rule) {
             echo "   -" . basename($rule) . "\n";
