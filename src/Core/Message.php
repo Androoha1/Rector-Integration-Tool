@@ -7,87 +7,92 @@ use Posternak\ConsolePrinter\Printer;
 
 final class Message
 {
-    private static Printer $printer;
+    private Printer $printer;
 
-    public static function applySetOfRules(string $name): void
+    public function __construct(?Printer $printer = null)
     {
-        self::$printer->println("{Going to apply rules from the {{$name}} rule set:}", [Color::YELLOW, Color::RED]);
+        $this->printer = $printer ?? new Printer();
     }
 
-    public static function horizontalLine(): void
+    public function applySetOfRules(string $name): void
+    {
+        $this->printer->println("{Going to apply rules from the {{$name}} rule set:}", [Color::YELLOW, Color::RED]);
+    }
+
+    public function horizontalLine(): void
     {
         echo "__________________________________________________________\n";
     }
 
-    public static function applyRule(int $ruleID, string $ruleName): void
+    public function applyRule(int $ruleID, string $ruleName): void
     {
-        self::$printer->println("$ruleID){{$ruleName}} is being applied to your codebase..", [Color::YELLOW]);
+        $this->printer->println("$ruleID){{$ruleName}} is being applied to your codebase..", [Color::YELLOW]);
     }
 
-    public static function rectorFailed(): void
+    public function rectorFailed(): void
     {
-        self::$printer->println("Rector failed!", [Color::RED]);
+        $this->printer->println("Rector failed!", [Color::RED]);
     }
 
-    public static function rectorFailedCompletely(): void
+    public function rectorFailedCompletely(): void
     {
-        self::$printer->println("Rector failed completely..! (maybe the rule is ignored)", [Color::RED]);
+        $this->printer->println("Rector failed completely..! (maybe the rule is ignored)", [Color::RED]);
     }
 
-    public static function done(): void
+    public function done(): void
     {
-        self::$printer->println(" Done!", [Color::GREEN]);
+        $this->printer->println(" Done!", [Color::GREEN]);
     }
 
-    public static function testingApp(): void
+    public function testingApp(): void
     {
         echo "Testing the app after changes..";
     }
 
-    public static function success(): void
+    public function success(): void
     {
-        self::$printer->println("Success!", [Color::GREEN]);
+        $this->printer->println("Success!", [Color::GREEN]);
     }
 
-    public static function commitedChanges(): void
+    public function commitedChanges(): void
     {
         echo "Changes are commited!\n";
     }
 
-    public static function ruleAddedToNotReviewed(): void
+    public function ruleAddedToNotReviewed(): void
     {
         echo "Rule added to not-reviewed list for project: " . getenv('PROJECT_NAME') . PHP_EOL;
     }
 
-    public static function testsFailed(): void
+    public function testsFailed(): void
     {
-        self::$printer->println(" Fail!", [Color::RED]);
+        $this->printer->println(" Fail!", [Color::RED]);
         echo "Changes will not be commited because tests didn't pass.\n";
     }
 
-    public static function noChangesMade(): void
+    public function noChangesMade(): void
     {
         echo "Rector made no changes with this rule.\n";
     }
 
-    public static function installingPackages(): void
+    public function installingPackages(): void
     {
-        self::$printer->println("Installing packages...", [Color::SOFT_BLUE]);
+        $this->printer->println("Installing packages...", [Color::SOFT_BLUE]);
     }
 
-    public static function updateConfPackage(): void
+    public function updateConfPackage(): void
     {
-        self::$printer->println("Updating the configuration package.. :", [Color::SOFT_BLUE]);
+        $this->printer->println("Updating the configuration package.. :", [Color::SOFT_BLUE]);
     }
 
-    public static function copyConfiguration(): void
+    public function copyConfiguration(): void
     {
-        self::$printer->print("Copying rector configuration.. : ", [Color::SOFT_BLUE]);
+        $this->printer->print("Copying rector configuration.. : ", [Color::SOFT_BLUE]);
     }
 
-    public static function skipFailedRules(array $failedRules): void
+    public function skipFailedRules(array $failedRules): void
     {
-        self::$printer->println("Ignoring bad rules in the rector configuration. Here is the list of bad rules:", [Color::SOFT_BLUE]);
+        $this->printer->println("Ignoring bad rules in the rector configuration. Here is the list of bad rules:", [Color::SOFT_BLUE]);
 
         foreach ($failedRules as $rule) {
             echo "   -" . basename($rule) . "\n";

@@ -22,10 +22,12 @@ final class Application {
     private bool $rectorIsSatisfied = true;
     private array $failedRules = [];
     private RectorIntegrateDb $db;
+    private Message $message;
 
     public function __construct() {
         $this->config = require "configuration.php";
         $this->db = new RectorIntegrateDb();
+        $this->message = new Message();
     }
 
     public function integrate(): void {
@@ -59,63 +61,63 @@ final class Application {
     }
 
     private function addInitialRectorConfigFile(): void {
-        Message::copyConfiguration();
+        $this->message->copyConfiguration();
         copy(
             $this->config["toolDir"] . '\\src\\DefaultConfigs\\rectorConfigExample-general-vanillaPHP.php',
             $this->config["project"]->getProjectWebDir() . '\\rector.php'
         );
-        Message::done();
+        $this->message->done();
 
         Git::addEverythingAndCommitWithMessage("Add rector base configuration.");
     }
 
     public function applyRule(string $ruleName, int $ruleID, string $groupName): void {
-        Message::horizontalLine();
-        Message::applyRule($ruleID, $ruleName);
+        $this->message->horizontalLine();
+        $this->message->applyRule($ruleID, $ruleName);
 
         $attempt = 0;
         while (++$attempt < 5 && !Rector::process()->__only($ruleName)->__clear_cache()->succeeded()) {
-            Message::rectorFailed();
+            $this->message->rectorFailed();
         }
-        if ($attempt === 5) Message::rectorFailedCompletely();
-        Message::done();
+        if ($attempt === 5) $this->message->rectorFailedCompletely();
+        $this->message->done();
 
         if (Git::hasChanges()) {
             $commitMessage = "ONE-11445 [$groupName] apply " . $ruleName . " rule.";
-            Message::testingApp();
+            $this->message->testingApp();
             if (Tester::test($this->config['projectType'])->succeeded()) {
-                Message::success();
+                $this->message->success();
 
                 Git::commitAll($commitMessage);
-                Message::commitedChanges();
+                $this->message->commitedChanges();
 
                 if (!$this->db->isRuleReviewed($ruleName)) {
                     $this->db->addNotReviewedRule($ruleName, getenv('PROJECT_NAME'));
-                    Message::ruleAddedToNotReviewed();
+                    $this->message->ruleAddedToNotReviewed();
                 }
 
                 $this->rectorIsSatisfied = false;
             }
             else {
-                Message::testsFailed();
+                $this->message->testsFailed();
                 Git::clearAllChanges();
                 if (!in_array($ruleName, $this->failedRules)) $this->failedRules[] = $ruleName;
             }
         }
-        else Message::noChangesMade();
+        else $this->message->noChangesMade();
 
-        Message::horizontalLine();
+        $this->message->horizontalLine();
     }
 
     public function applySetOfRules(array $ruleSet, string $name): void {
-        Message::applySetOfRules($name);
+        $this->message->applySetOfRules($name);
         foreach ($ruleSet as $index => $rule) {
             $this->applyRule($rule, $index, $name);
         }
     }
 
     private function installPackages(): void {
-        Message::installingPackages();
+        $this->message->installingPackages();
 
         $packages = ["rector/rector"];
         if ($this->config["projectType"] === "laravel") $packages[] = "driftingly/rector-laravel";
@@ -129,7 +131,7 @@ final class Application {
     }
 
     private function updateConfigPackage(): void {
-        Message::updateConfPackage();
+        $this->message->updateConfPackage();
 
         // TODO: don't use this legacy logic function
         updatePackageVersionConstraint(
@@ -144,7 +146,7 @@ final class Application {
     }
 
     private function copyConfiguration(): void {
-        Message::copyConfiguration();
+        $this->message->copyConfiguration();
 
         switch ($this->config['projectType']) {
             case "laravel":
@@ -158,13 +160,13 @@ final class Application {
         }
 
         new ShellCommand('copy "' . $this->config["toolDir"] . '\\src\\DefaultConfigs\\' . $fileName . '" "' . $this->config["project"]->getProjectWebDir() . '\\rector.php"')->run();
-        Message::done();
+        $this->message->done();
 
         Git::addEverythingAndCommitWithMessage("ONE-11445 add rector base configuration (to be cleaned later).");
     }
 
     public function skipFailedRulesInRectorConf(): void {
-        Message::skipFailedRules($this->failedRules);
+        $this->message->skipFailedRules($this->failedRules);
 
         $export = var_export($this->failedRules, true);
         $file = $this->config["toolDir"] . '/temp/failedRules-' . getenv('PROJECT_NAME') . ".php";
