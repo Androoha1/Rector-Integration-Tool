@@ -1,8 +1,13 @@
 <?php
 
+use Rector\Carbon\Rector\FuncCall\DateFuncCallToCarbonRector;
+use Rector\Carbon\Rector\FuncCall\TimeFuncCallToCarbonRector;
+use Rector\Carbon\Rector\MethodCall\DateTimeMethodCallToCarbonRector;
+use Rector\Carbon\Rector\New_\DateTimeInstanceToCarbonRector;
+
 return [
-    'Rector\Carbon\Rector\FuncCall\DateFuncCallToCarbonRector',
-    'Rector\Carbon\Rector\FuncCall\TimeFuncCallToCarbonRector',
-    'Rector\Carbon\Rector\MethodCall\DateTimeMethodCallToCarbonRector',
-    'Rector\Carbon\Rector\New_\DateTimeInstanceToCarbonRector',
+    DateFuncCallToCarbonRector::class,
+    TimeFuncCallToCarbonRector::class,
+    DateTimeMethodCallToCarbonRector::class,
+    DateTimeInstanceToCarbonRector::class,
 ];

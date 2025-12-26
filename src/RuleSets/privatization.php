@@ -1,7 +1,11 @@
 <?php
 
+use Rector\Privatization\Rector\ClassMethod\PrivatizeFinalClassMethodRector;
+use Rector\Privatization\Rector\MethodCall\PrivatizeLocalGetterToPropertyRector;
+use Rector\Privatization\Rector\Property\PrivatizeFinalClassPropertyRector;
+
 return [
-    'Rector\Privatization\Rector\ClassMethod\PrivatizeFinalClassMethodRector',
-    'Rector\Privatization\Rector\MethodCall\PrivatizeLocalGetterToPropertyRector',
-    'Rector\Privatization\Rector\Property\PrivatizeFinalClassPropertyRector',
+    PrivatizeFinalClassMethodRector::class,
+    PrivatizeLocalGetterToPropertyRector::class,
+    PrivatizeFinalClassPropertyRector::class,
 ];

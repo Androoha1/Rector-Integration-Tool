@@ -1,7 +1,11 @@
 <?php
 
+use Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector;
+use Rector\Privatization\Rector\Class_\FinalizeTestCaseClassRector;
+use Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector;
+
 return [
-//    'Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector', -> ban for BTA
-    'Rector\Privatization\Rector\Class_\FinalizeTestCaseClassRector',
-//    'Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector', -> will not use, BTA projects are not ready
+    PostIncDecToPreIncDecRector::class,
+    FinalizeTestCaseClassRector::class,
+    DeclareStrictTypesRector::class,
 ];

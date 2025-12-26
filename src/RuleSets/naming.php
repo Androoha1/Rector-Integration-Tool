@@ -1,11 +1,17 @@
 <?php
 
-// the whole set is banned for BTA projects
+use Rector\Naming\Rector\Assign\RenameVariableToMatchMethodCallReturnTypeRector;
+use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
+use Rector\Naming\Rector\ClassMethod\RenameVariableToMatchNewTypeRector;
+use Rector\Naming\Rector\Class_\RenamePropertyToMatchTypeRector;
+use Rector\Naming\Rector\Foreach_\RenameForeachValueVariableToMatchExprVariableRector;
+use Rector\Naming\Rector\Foreach_\RenameForeachValueVariableToMatchMethodCallReturnTypeRector;
+
 return [
-//    'Rector\Naming\Rector\Assign\RenameVariableToMatchMethodCallReturnTypeRector',
-//    'Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector',
-//    'Rector\Naming\Rector\ClassMethod\RenameVariableToMatchNewTypeRector',
-//    'Rector\Naming\Rector\Class_\RenamePropertyToMatchTypeRector',
-//    'Rector\Naming\Rector\Foreach_\RenameForeachValueVariableToMatchExprVariableRector',
-//    'Rector\Naming\Rector\Foreach_\RenameForeachValueVariableToMatchMethodCallReturnTypeRector',
+    RenameVariableToMatchMethodCallReturnTypeRector::class,
+    RenameParamToMatchTypeRector::class,
+    RenameVariableToMatchNewTypeRector::class,
+    RenamePropertyToMatchTypeRector::class,
+    RenameForeachValueVariableToMatchExprVariableRector::class,
+    RenameForeachValueVariableToMatchMethodCallReturnTypeRector::class,
 ];

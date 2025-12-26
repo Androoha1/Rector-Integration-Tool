@@ -1,12 +1,21 @@
 <?php
 
+use Rector\EarlyReturn\Rector\Foreach_\ChangeNestedForeachIfsToEarlyContinueRector;
+use Rector\EarlyReturn\Rector\If_\ChangeIfElseValueAssignToEarlyReturnRector;
+use Rector\EarlyReturn\Rector\If_\ChangeNestedIfsToEarlyReturnRector;
+use Rector\EarlyReturn\Rector\If_\ChangeOrIfContinueToMultiContinueRector;
+use Rector\EarlyReturn\Rector\If_\RemoveAlwaysElseRector;
+use Rector\EarlyReturn\Rector\Return_\PreparedValueToEarlyReturnRector;
+use Rector\EarlyReturn\Rector\Return_\ReturnBinaryOrToEarlyReturnRector;
+use Rector\EarlyReturn\Rector\StmtsAwareInterface\ReturnEarlyIfVariableRector;
+
 return [
-//    'Rector\EarlyReturn\Rector\Foreach_\ChangeNestedForeachIfsToEarlyContinueRector',
-//    'Rector\EarlyReturn\Rector\If_\ChangeIfElseValueAssignToEarlyReturnRector',
-//    'Rector\EarlyReturn\Rector\If_\ChangeNestedIfsToEarlyReturnRector',
-//    'Rector\EarlyReturn\Rector\If_\ChangeOrIfContinueToMultiContinueRector',
-//    'Rector\EarlyReturn\Rector\If_\RemoveAlwaysElseRector',
-//    'Rector\EarlyReturn\Rector\Return_\PreparedValueToEarlyReturnRector',
-//    'Rector\EarlyReturn\Rector\Return_\ReturnBinaryOrToEarlyReturnRector',
-//    'Rector\EarlyReturn\Rector\StmtsAwareInterface\ReturnEarlyIfVariableRector',
+    ChangeNestedForeachIfsToEarlyContinueRector::class,
+    ChangeIfElseValueAssignToEarlyReturnRector::class,
+    ChangeNestedIfsToEarlyReturnRector::class,
+    ChangeOrIfContinueToMultiContinueRector::class,
+    RemoveAlwaysElseRector::class,
+    PreparedValueToEarlyReturnRector::class,
+    ReturnBinaryOrToEarlyReturnRector::class,
+    ReturnEarlyIfVariableRector::class,
 ];
