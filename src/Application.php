@@ -30,21 +30,15 @@ final class Application {
     }
 
     public function integrate(): void {
-        if ($notDone = false) {
-            /* @var $project PhpProject */
-            $project = $this->config['project'];
-            $project->startNewDevelopmentBranch($this->config['vcsBranchName']);
-            putenv("PROJECT_NAME=" . basename($this->config['project']->getProjectDir()));
+        /* @var $project PhpProject */
+        $project = $this->config['project'];
+        $project->startNewDevelopmentBranch($this->config['vcsBranchName']);
+        putenv("PROJECT_NAME=" . basename($this->config['project']->getProjectDir()));
 
-            $this->installPackages();
-//            $this->updateConfigPackage(); // for BTA projects only
+        $this->installPackages();
+//           $this->updateConfigPackage(); // for BTA projects only
 
-            $this->addInitialRectorConfigFile();
-        }
-        else {
-            $project = $this->config['project'];
-            chdir($project->getProjectWebDir());
-        }
+        $this->addInitialRectorConfigFile();
 
         do {
             $this->rectorIsSatisfied = true;
@@ -53,9 +47,8 @@ final class Application {
             }
         } while (false);
 
-        $dd = 5;
-
-        $this->skipFailedRulesInRectorConf();
+        // TODO - check this module after all the refactorings
+        //$this->skipFailedRulesInRectorConf();
     }
 
     private function addInitialRectorConfigFile(): void {
@@ -89,6 +82,7 @@ final class Application {
                 Git::addEverythingAndCommitWithMessage($commitMessage);
                 $this->message->commitedChanges();
 
+                // TODO - refactor and check the database module
 //                if (!$this->db->isRuleReviewed($ruleName)) {
 //                    $this->db->addNotReviewedRule($ruleName, getenv('PROJECT_NAME'));
 //                    $this->message->ruleAddedToNotReviewed();
