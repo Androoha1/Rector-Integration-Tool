@@ -39,7 +39,7 @@ final class Integrator {
         putenv("PROJECT_NAME=" . basename($this->config['project']->getProjectDir()));
 
         $this->installPackages();
-//           $this->updateConfigPackage(); // for BTA projects only
+//           $this->updateConfigPackage(); // for the company projects
 
         $this->addInitialRectorConfigFile();
 
@@ -49,8 +49,7 @@ final class Integrator {
             }
         } while (!$this->rectorIsSatisfied());
 
-        // TODO - check this module after all the refactorings
-        //$this->skipFailedRulesInRectorConf();
+        $this->skipFailedRulesInRectorConf();
     }
 
     /**
@@ -164,19 +163,13 @@ final class Integrator {
         Git::addEverythingAndCommitWithMessage("Install rector packages.");
     }
 
-    private function updateConfigPackage(): void {
+    private function updateConfigPackage(string $versionConstraint): void {
         $this->message->updateConfPackage();
 
-        // TODO: don't use this legacy logic function
-        updatePackageVersionConstraint(
-            $this->config["projectDir"] . '/composer.json',
-            "divi-group/configurations",
-            "dev-ONE-12064-custom-rector-rules",
-            true
-        );
-        Composer::update();
+        $this->config["project"]->composerJsonFileManager->setPackageVersionConstraint('divi-group/configurations', $versionConstraint);
+        Composer::update('divi-group/configurations')->_W();
 
-        Git::addEverythingAndCommitWithMessage("ONE-11445 update the configuration package.");
+        Git::addEverythingAndCommitWithMessage("update the configuration package.");
     }
 
     private function skipFailedRulesInRectorConf(): void {

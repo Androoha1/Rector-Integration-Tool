@@ -33,10 +33,7 @@
         "psr-4": {
             "RectorIntegrationTool\\": "src/",
             "RectorIntegrationTool\\database\\": "database/"
-        },
-        "files": [
-            "src/Core/HelperFunctions/legacyLogic.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {

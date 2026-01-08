@@ -2846,12 +2846,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Androoha1/Commandeer.git",
-                "reference": "c6d3fe90975cfe2191373e0597fb0d6aa75d8d87"
+                "reference": "5ad1276de59f96222cd0e808336a22d52703c224"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Androoha1/Commandeer/zipball/c6d3fe90975cfe2191373e0597fb0d6aa75d8d87",
-                "reference": "c6d3fe90975cfe2191373e0597fb0d6aa75d8d87",
+                "url": "https://api.github.com/repos/Androoha1/Commandeer/zipball/5ad1276de59f96222cd0e808336a22d52703c224",
+                "reference": "5ad1276de59f96222cd0e808336a22d52703c224",
                 "shasum": ""
             },
             "require": {
@@ -2897,7 +2897,7 @@
                 "source": "https://github.com/Androoha1/Commandeer/tree/main",
                 "issues": "https://github.com/Androoha1/Commandeer/issues"
             },
-            "time": "2026-01-08T12:15:28+00:00"
+            "time": "2026-01-09T09:08:26+00:00"
         },
         {
             "name": "posternak/console-printer",
