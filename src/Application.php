@@ -24,8 +24,8 @@ final class Application {
     private RectorIntegrateDb $db;
     private Message $message;
 
-    public function __construct() {
-        $this->config = require "configuration.php";
+    public function __construct(array $config) {
+        $this->config = $config;
         $this->db = new RectorIntegrateDb();
         $this->message = new Message();
     }
