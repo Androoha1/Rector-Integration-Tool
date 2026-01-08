@@ -23,9 +23,9 @@ final class Integrator {
     private RectorIntegrateDb $db;
     private Message $message;
 
-    public function __construct(array $config) {
+    public function __construct(array $config, ?string $databaseFilePath = null) {
         $this->config = $config;
-        $this->db = new RectorIntegrateDb();
+        $this->db = new RectorIntegrateDb($databaseFilePath);
         $this->message = new Message();
     }
 
