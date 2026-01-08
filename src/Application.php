@@ -7,13 +7,14 @@ namespace RectorIntegrationTool;
 use Posternak\Commandeer\Builders\Composer;
 use Posternak\Commandeer\Builders\Git;
 use Posternak\Commandeer\Builders\Rector;
+use Posternak\Commandeer\ShellCommand;
 use Posternak\ConsolePrinter\Color;
 use Posternak\ConsolePrinter\Printer;
 use RectorIntegrationTool\Core\Message;
 use RectorIntegrationTool\database\RectorIntegrateDb;
 use RectorIntegrationTool\Core\Tester;
-
 use RectorIntegrationTool\Libraries\Projects\PhpProject;
+
 use function Safe\chdir;
 
 final class Application {
@@ -27,6 +28,35 @@ final class Application {
         $this->config = require "configuration.php";
         $this->db = new RectorIntegrateDb();
         $this->message = new Message();
+    }
+
+    public function applyWhatIsProposed(PhpProject $project, string $taskId): void {
+        do {
+            // Get all refactoring suggestions from Rector
+            $fileDiffs = $this->rectorRefactoringSuggestions();
+
+            // Collect all unique rector rules that were trying to change something
+            $rulesToApply = [];
+            foreach ($fileDiffs as $fileDiff) {
+                foreach ($fileDiff['applied_rectors'] as $appliedRector) {
+                    if (!in_array($appliedRector, $rulesToApply)) {
+                        $rulesToApply[] = $appliedRector;
+                    }
+                }
+            }
+
+            // Apply all unique rules one by one for nice VCS history organization
+            foreach ($rulesToApply as $id => $ruleToApply) {
+                $this->applyRule($ruleToApply, $id, "mixed");
+            }
+        } while (count($this->rectorRefactoringSuggestions()) > 0);
+    }
+
+    private function rectorRefactoringSuggestions(): array {
+        $rectorOutput = Rector::process()->__dry_run()->__clear_cache()->__output_format('json')->run()->getOutput();
+        $rectorOutputJson = json_decode(implode("\n", $rectorOutput), true);
+
+        return $rectorOutputJson['file_diffs'] ?? [];
     }
 
     public function integrate(): void {

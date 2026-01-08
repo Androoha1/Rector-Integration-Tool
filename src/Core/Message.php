@@ -14,6 +14,10 @@ final class Message
         $this->printer = $printer ?? new Printer();
     }
 
+    public function startingNewDevelopmentBranch(): void {
+        $this->printer->println("Starting a new development branch for the project under integration..", [Color::SOFT_BLUE]);
+    }
+
     public function applySetOfRules(string $name): void
     {
         $this->printer->println("{Going to apply rules from the {{$name}} rule set:}", [Color::YELLOW, Color::RED]);

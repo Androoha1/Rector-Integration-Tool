@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "092a103cab60b504da2e311b0ddf1355",
+    "content-hash": "90e1c1dd30288e60cde49a37b7b979ec",
     "packages": [
         {
             "name": "brick/math",
@@ -2846,16 +2846,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Androoha1/Commandeer.git",
-                "reference": "8e718cd6fc98fc1440f1a2af12f0384987e2f670"
+                "reference": "c6d3fe90975cfe2191373e0597fb0d6aa75d8d87"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Androoha1/Commandeer/zipball/8e718cd6fc98fc1440f1a2af12f0384987e2f670",
-                "reference": "8e718cd6fc98fc1440f1a2af12f0384987e2f670",
+                "url": "https://api.github.com/repos/Androoha1/Commandeer/zipball/c6d3fe90975cfe2191373e0597fb0d6aa75d8d87",
+                "reference": "c6d3fe90975cfe2191373e0597fb0d6aa75d8d87",
                 "shasum": ""
             },
             "require": {
                 "ext-readline": "*",
+                "php": "^8.4",
                 "posternak/console-printer": "*"
             },
             "require-dev": {
@@ -2896,7 +2897,7 @@
                 "source": "https://github.com/Androoha1/Commandeer/tree/main",
                 "issues": "https://github.com/Androoha1/Commandeer/issues"
             },
-            "time": "2025-12-22T14:48:19+00:00"
+            "time": "2026-01-08T12:15:28+00:00"
         },
         {
             "name": "posternak/console-printer",
