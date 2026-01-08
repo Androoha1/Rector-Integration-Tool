@@ -10,7 +10,7 @@ class PhpProject extends Project {
     public readonly ComposerJsonFileManager $composerJsonFileManager;
     public readonly ComposerLockFileManager $composerLockFileManager;
 
-    public function __construct(string $projectDir, Collection $tags) {
+    public function __construct(string $projectDir, Collection $tags = new Collection()) {
         parent::__construct($projectDir, $tags);
         $this->composerJsonFileManager = new ComposerJsonFileManager($this->projectWebDir . '/composer.json');
         $this->composerLockFileManager = new ComposerLockFileManager($this->projectWebDir . '/composer.lock');

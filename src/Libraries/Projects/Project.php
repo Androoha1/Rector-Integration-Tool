@@ -8,15 +8,17 @@ use Posternak\Commandeer\Builders\Composer;
 use Posternak\Commandeer\Builders\Git;
 
 class Project {
+    private string $name;
     protected string $projectDir;
     protected string $projectWebDir;
     private Collection $tags;
 
-    public function __construct(string $projectDir, Collection $tags) {
+    public function __construct(string $projectDir, Collection $tags = new Collection(), ?string $name = null) {
         $this->projectDir = $projectDir;
         $this->projectWebDir = $projectDir;
         $this->projectWebDir .= is_dir($projectDir . '/web') ? '/web' : '';
         $this->tags = $tags;
+        $this->name = $name ?? basename($projectDir);
     }
 
     public function getProjectDir(): string {
@@ -26,6 +28,10 @@ class Project {
     public function getProjectWebDir(): string
     {
         return $this->projectWebDir;
+    }
+
+    public function getProjectName(): string {
+        return $this->name;
     }
 
     public function containsTag(string $tag): bool {

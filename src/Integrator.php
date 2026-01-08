@@ -19,7 +19,6 @@ use function Safe\chdir;
 
 final class Integrator {
     private array $config = [];
-    private bool $rectorIsSatisfied = true;
     private array $failedRules = [];
     private RectorIntegrateDb $db;
     private Message $message;
@@ -30,7 +29,34 @@ final class Integrator {
         $this->message = new Message();
     }
 
-    public function applyWhatIsProposed(PhpProject $project, string $taskId): void {
+    /**
+     * Integrate rector into a project that hasn't seen the tool.
+     */
+    public function integrate(): void {
+        /* @var $project PhpProject */
+        $project = $this->config['project'];
+        $project->startNewDevelopmentBranch($this->config['vcsBranchName']);
+        putenv("PROJECT_NAME=" . basename($this->config['project']->getProjectDir()));
+
+        $this->installPackages();
+//           $this->updateConfigPackage(); // for BTA projects only
+
+        $this->addInitialRectorConfigFile();
+
+        do {
+            foreach ($this->config["ruleSets"] as $name => $ruleSet) {
+                $this->applySetOfRules($ruleSet, $name);
+            }
+        } while (!$this->rectorIsSatisfied());
+
+        // TODO - check this module after all the refactorings
+        //$this->skipFailedRulesInRectorConf();
+    }
+
+    /**
+     * Apply all transformations that rector proposes in an organized manner.
+     */
+    public function applyWhatIsProposed(): void {
         do {
             // Get all refactoring suggestions from Rector
             $fileDiffs = $this->rectorRefactoringSuggestions();
@@ -49,7 +75,7 @@ final class Integrator {
             foreach ($rulesToApply as $id => $ruleToApply) {
                 $this->applyRule($ruleToApply, $id, "mixed");
             }
-        } while (count($this->rectorRefactoringSuggestions()) > 0);
+        } while (!$this->rectorIsSatisfied());
     }
 
     private function rectorRefactoringSuggestions(): array {
@@ -59,26 +85,8 @@ final class Integrator {
         return $rectorOutputJson['file_diffs'] ?? [];
     }
 
-    public function integrate(): void {
-        /* @var $project PhpProject */
-        $project = $this->config['project'];
-        $project->startNewDevelopmentBranch($this->config['vcsBranchName']);
-        putenv("PROJECT_NAME=" . basename($this->config['project']->getProjectDir()));
-
-        $this->installPackages();
-//           $this->updateConfigPackage(); // for BTA projects only
-
-        $this->addInitialRectorConfigFile();
-
-        do {
-            $this->rectorIsSatisfied = true;
-            foreach ($this->config["ruleSets"] as $name => $ruleSet) {
-                $this->applySetOfRules($ruleSet, $name);
-            }
-        } while (false);
-
-        // TODO - check this module after all the refactorings
-        //$this->skipFailedRulesInRectorConf();
+    private function rectorIsSatisfied(): bool {
+        return count($this->rectorRefactoringSuggestions()) === 0;
     }
 
     private function addInitialRectorConfigFile(): void {
@@ -92,7 +100,7 @@ final class Integrator {
         Git::addEverythingAndCommitWithMessage("Add rector base configuration.");
     }
 
-    public function applyRule(string $ruleName, int $ruleID, string $ruleSet): void {
+    private function applyRule(string $ruleName, int $ruleID, string $ruleSet): void {
         $this->message->horizontalLine();
         $this->message->applyRule($ruleID, $ruleName);
 
@@ -119,12 +127,10 @@ final class Integrator {
                 $this->message->commitedChanges();
 
                 // TODO - refactor and check the database module
-//                if (!$this->db->isRuleReviewed($ruleName)) {
-//                    $this->db->addNotReviewedRule($ruleName, getenv('PROJECT_NAME'));
-//                    $this->message->ruleAddedToNotReviewed();
-//                }
-
-                $this->rectorIsSatisfied = false;
+                if (!$this->db->isRuleReviewed($ruleName)) {
+                    $this->db->addNotReviewedRule($ruleName, $this->config['project']->getProjectName());
+                    $this->message->ruleAddedToNotReviewed();
+                }
             }
             else {
                 $this->message->testsFailed();
@@ -137,7 +143,7 @@ final class Integrator {
         $this->message->horizontalLine();
     }
 
-    public function applySetOfRules(array $ruleSet, string $name): void {
+    private function applySetOfRules(array $ruleSet, string $name): void {
         $this->message->applySetOfRules($name);
         foreach ($ruleSet as $index => $rule) {
             $this->applyRule($rule, $index, $name);
@@ -173,7 +179,7 @@ final class Integrator {
         Git::addEverythingAndCommitWithMessage("ONE-11445 update the configuration package.");
     }
 
-    public function skipFailedRulesInRectorConf(): void {
+    private function skipFailedRulesInRectorConf(): void {
         $this->message->skipFailedRules($this->failedRules);
 
         $export = var_export($this->failedRules, true);
