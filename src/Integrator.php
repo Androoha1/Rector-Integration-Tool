@@ -7,7 +7,6 @@ namespace RectorIntegrationTool;
 use Posternak\Commandeer\Builders\Composer;
 use Posternak\Commandeer\Builders\Git;
 use Posternak\Commandeer\Builders\Rector;
-use Posternak\Commandeer\ShellCommand;
 use Posternak\ConsolePrinter\Color;
 use Posternak\ConsolePrinter\Printer;
 use RectorIntegrationTool\Core\Message;
@@ -15,6 +14,7 @@ use RectorIntegrationTool\database\RectorIntegrateDb;
 use RectorIntegrationTool\Core\Tester;
 use RectorIntegrationTool\Libraries\Projects\PhpProject;
 
+use RuntimeException;
 use function Safe\chdir;
 
 final class Integrator {
@@ -106,7 +106,13 @@ final class Integrator {
         if (Git::hasChanges()) {
             $commitMessage = "[$ruleSet] apply " . $ruleName . " rule.";
             $this->message->testingApp();
-            if (Tester::test($this->config['projectType'])->succeeded()) {
+
+            try {
+                $testsPassed = Tester::test($this->config['projectType'])->succeeded();
+            } catch (RuntimeException $e) {
+                $testsPassed = false;
+            }
+            if ($testsPassed) {
                 $this->message->success();
 
                 Git::addEverythingAndCommitWithMessage($commitMessage);
