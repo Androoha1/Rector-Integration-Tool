@@ -50,7 +50,7 @@ final class Message
 
     public function testingApp(): void
     {
-        echo "Testing the app after changes..";
+        echo "Testing the app after changes..\n";
     }
 
     public function success(): void

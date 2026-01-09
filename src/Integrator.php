@@ -35,6 +35,7 @@ final class Integrator {
     public function integrate(): void {
         /* @var $project PhpProject */
         $project = $this->config['project'];
+        $this->message->startingNewDevelopmentBranch();
         $project->startNewDevelopmentBranch($this->config['vcsBranchName']);
         putenv("PROJECT_NAME=" . basename($this->config['project']->getProjectDir()));
 
@@ -71,10 +72,14 @@ final class Integrator {
             }
 
             // Apply all unique rules one by one for nice VCS history organization
+            $appliedSomething = false;
             foreach ($rulesToApply as $id => $ruleToApply) {
-                $this->applyRule($ruleToApply, $id, "mixed");
+                $this->applyRule($ruleToApply, $id, "mixed", $appliedSomething);
             }
-        } while (!$this->rectorIsSatisfied());
+
+        } while (!$this->rectorIsSatisfied() && $appliedSomething);
+
+        $this->skipFailedRulesInRectorConf();
     }
 
     private function rectorRefactoringSuggestions(): array {
@@ -99,7 +104,7 @@ final class Integrator {
         Git::addEverythingAndCommitWithMessage("Add rector base configuration.");
     }
 
-    private function applyRule(string $ruleName, int $ruleID, string $ruleSet): void {
+    private function applyRule(string $ruleName, int $ruleID, string $ruleSet, bool &$applied): void {
         $this->message->horizontalLine();
         $this->message->applyRule($ruleID, $ruleName);
 
@@ -124,6 +129,7 @@ final class Integrator {
 
                 Git::addEverythingAndCommitWithMessage($commitMessage);
                 $this->message->commitedChanges();
+                $applied = true;
 
                 // TODO - refactor and check the database module
                 if (!$this->db->isRuleReviewed($ruleName)) {
@@ -176,13 +182,13 @@ final class Integrator {
         $this->message->skipFailedRules($this->failedRules);
 
         $export = var_export($this->failedRules, true);
-        $file = $this->config["toolDir"] . '/temp/failedRules-' . getenv('PROJECT_NAME') . ".php";
+        $file = $this->config["toolDir"] . '/temp/failedRules-' . $this->config["project"]->getProjectName() . ".php";
         file_put_contents($file, "<?php\n\nreturn $export;\n");
 
         chdir($this->config["toolDir"]);
-        Rector::process("\"". $this->config["projectDir"] . '/rector.php' . "\"")->__clear_cache();
+        Rector::process("\"". $this->config["project"]->getProjectWebDir() . '/rector.php' . "\"")->__clear_cache();
 
-        chdir($this->config["projectDir"]);
+        chdir($this->config["project"]->getProjectWebDir());
         Git::addEverythingAndCommitWithMessage("ONE-11445 ignore rules that broke the project.");
     }
 }

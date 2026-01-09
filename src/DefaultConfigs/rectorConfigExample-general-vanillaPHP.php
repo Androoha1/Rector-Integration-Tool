@@ -27,6 +27,6 @@ return RectorConfig::configure()
         phpunitCodeQuality: true,
     )
     ->withCache(
-        cacheDirectory: __DIR__ . '/cache',
+        cacheDirectory: __DIR__ . '/cache/rector',
         cacheClass: FileCacheStorage::class
     );
